@@ -59,7 +59,7 @@ class AuthController extends Controller
                     'success' => true,
                     'message' => 'Bienvenido',
                     'data' => [
-                        'usuario' => $usuario->only(['id', 'name', 'email']),
+                        'user' => $usuario->only(['id', 'name', 'email']),
                         'token' => $token,
                     ]
                 ], 200);
@@ -107,6 +107,42 @@ class AuthController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al cerrar sesión',
+                'error' => config('app.debug') ? $e->getMessage() : 'Error interno del servidor'
+            ], 500);
+        }
+    }
+
+    public function checkAuthStatus(Request $request): JsonResponse
+    {
+        try {
+            // Obtener el usuario autenticado
+            $usuario = $request->user();
+
+            // Verificar si el usuario tiene el rol requerido
+            if (!$usuario->hasRole('Gerente')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No tienes permisos para acceder al sistema'
+                ], 403);
+            }
+
+            // Generar un nuevo token
+            $newToken = $usuario->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Sesión verificada correctamente',
+                'data' => [
+                    'user' => $usuario->only(['id', 'name', 'email']),
+                    'token' => $newToken,
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error("Error al verificar estado de autenticación: " . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al verificar la sesión',
                 'error' => config('app.debug') ? $e->getMessage() : 'Error interno del servidor'
             ], 500);
         }

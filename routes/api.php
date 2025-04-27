@@ -21,4 +21,5 @@ Route::post('/login', [AuthController::class, 'login']);
 //TODO: RUTAS PROTEGIDAS POR SANCTUM
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/logout", [AuthController::class, "logout"]);
+    Route::get("/check-auth-status", [AuthController::class, "checkAuthStatus"]);
 });
