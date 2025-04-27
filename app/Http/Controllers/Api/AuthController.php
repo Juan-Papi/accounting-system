@@ -10,94 +10,105 @@ use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
     use ApiResponder;
-    public function login(): JsonResponse
+
+    public function login(Request $request): JsonResponse
     {
-        request()->validate([
-            "email" => "required|email",
-            "password" => "required|min:6|max:20",
-            "device_name" => "required"
+        try {
+            Log::info("Iniciando proceso de login");
 
-        ]);
-
-         // obtiene los usuarios que no tienen el rol de Administrador y Ejecutivo de ventas
-        $usuarioCliente = User::select(["id", "name", "password", "email"])
-            ->where("email", request("email"))
-            ->whereDoesntHave("roles", function ($q) {
-                $q->whereIn("name", ["Administrador", "Ejecutivo de ventas"]);
-            })
-            ->first();
-
-
-        /* Verificacion si el usuarioCliente existe */
-        if (!$usuarioCliente || !Hash::check(request("password"), $usuarioCliente->password)) {
-            throw ValidationException::withMessages([
-                "email" => [__("Credenciales incorrectas")]
+            // Validar los datos de entrada
+            $validated = $request->validate([
+                "email" => "required|email",
+                "password" => "required|min:6|max:20",
             ]);
+
+            DB::beginTransaction();
+
+            try {
+                // Obtener el usuario por email
+                $usuario = User::where("email", $validated["email"])->first();
+
+                // Verificar si el usuario existe y la contraseña es correcta
+                if (!$usuario || !Hash::check($validated["password"], $usuario->password)) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Credenciales incorrectas'
+                    ], 401);
+                }
+
+                // Verificar si el usuario tiene el rol de Gerente
+                if (!$usuario->hasRole('Gerente')) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'No tienes permisos para acceder al sistema'
+                    ], 403);
+                }
+
+                // Generar token
+                $token = $usuario->createToken('auth_token')->plainTextToken;
+
+                DB::commit();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Bienvenido',
+                    'data' => [
+                        'usuario' => $usuario->only(['id', 'name', 'email']),
+                        'token' => $token,
+                    ]
+                ], 200);
+            } catch (\Exception $e) {
+                DB::rollBack();
+                Log::error("Error en la base de datos: " . $e->getMessage());
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error de conexión a la base de datos',
+                    'error' => config('app.debug') ? $e->getMessage() : 'Problema al procesar la solicitud'
+                ], 500);
+            }
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::warning("Error de validación: " . json_encode($e->errors()));
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Datos de entrada inválidos',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            Log::error("Error general: " . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Ha ocurrido un error inesperado',
+                'error' => config('app.debug') ? $e->getMessage() : 'Error interno del servidor'
+            ], 500);
         }
-
-        $token = $usuarioCliente->createToken(request("device_name"))->plainTextToken;
-
-
-        return $this->success(
-            __("Bienvenid@"),
-            [
-                "cliente" => $usuarioCliente->toArray(),
-
-                "token" => $token,
-            ]
-        );
     }
 
-
-    //TODO: Funcion para cerrar sesion
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        //Recuperando el token
-        $token = request()->bearerToken();
+        try {
+            $request->user()->currentAccessToken()->delete();
 
-        /** @var PersonalAccessToken $model */
+            return response()->json([
+                'success' => true,
+                'message' => 'Sesión cerrada correctamente'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error("Error al cerrar sesión: " . $e->getMessage());
 
-        $model = Sanctum::$personalAccessTokenModel;
-
-        $accessToken = $model::findToken($token);
-        /* si existe el token se eliminara */
-
-        $accessToken->delete();
-
-
-        return $this->success(
-            __("Has cerrado sesion con exito!"),
-            data: null,
-            code: 204,
-
-        );
-    }
-
-
-    //TODO: PARA EL REGISTRO DEL CLIENTE
-    public function signup(): JsonResponse
-    {
-        request()->validate([
-            "name" => "required|min:2|max:60",
-            "email" => "required|email|unique:users",
-            "password" => "required|min:8|max:20",
-            "passwordConfirmation" => "required|same:password|min:8|max:20",
-        ]);
-
-        User::create([
-            "name" => request("name"),
-            "email" => request("email"),
-            "password" => bcrypt(request("password")),
-            "created_at" => now(),
-
-        ]);
-
-        return $this->success(
-            __("Cuenta creada")
-        );
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cerrar sesión',
+                'error' => config('app.debug') ? $e->getMessage() : 'Error interno del servidor'
+            ], 500);
+        }
     }
 }
