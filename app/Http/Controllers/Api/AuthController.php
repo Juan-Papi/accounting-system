@@ -59,8 +59,10 @@ class AuthController extends Controller
                     'success' => true,
                     'message' => 'Bienvenido',
                     'data' => [
-                        'user' => $usuario->only(['id', 'name', 'email']),
-                        'token' => $token,
+                        'user' => array_merge(
+                            $usuario->only(['id', 'name', 'email']),
+                            ['token' => $token]
+                        ),
                     ]
                 ], 200);
             } catch (\Exception $e) {
@@ -133,8 +135,10 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Sesión verificada correctamente',
                 'data' => [
-                    'user' => $usuario->only(['id', 'name', 'email']),
-                    'token' => $newToken,
+                    'user' => array_merge(
+                        $usuario->only(['id', 'name', 'email']),
+                        ['token' => $newToken]
+                    ),
                 ]
             ], 200);
         } catch (\Exception $e) {
