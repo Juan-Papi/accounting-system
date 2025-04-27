@@ -6,9 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponder;
-use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -58,12 +56,10 @@ class AuthController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Bienvenido',
-                    'data' => [
-                        'user' => array_merge(
-                            $usuario->only(['id', 'name', 'email']),
-                            ['token' => $token]
-                        ),
-                    ]
+                    'data' => array_merge(
+                        $usuario->only(['id', 'name', 'email']),
+                        ['token' => $token]
+                    )
                 ], 200);
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -134,12 +130,10 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Sesión verificada correctamente',
-                'data' => [
-                    'user' => array_merge(
-                        $usuario->only(['id', 'name', 'email']),
-                        ['token' => $newToken]
-                    ),
-                ]
+                'data' => array_merge(
+                    $usuario->only(['id', 'name', 'email']),
+                    ['token' => $newToken]
+                )
             ], 200);
         } catch (\Exception $e) {
             Log::error("Error al verificar estado de autenticación: " . $e->getMessage());
