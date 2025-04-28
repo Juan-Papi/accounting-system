@@ -3,31 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\EstadoPedidoController;
-use App\Http\Controllers\CategoriaController;
-use App\Http\Controllers\MarcaController;
-use App\Http\Controllers\PosicionController;
-use App\Http\Controllers\VehiculoController;
-use App\Http\Controllers\ParabrisaController;
-use App\Http\Controllers\ProveedorController;
-use App\Http\Controllers\AlmacenController;
-use App\Http\Controllers\NotaCompraController;
-use App\Http\Controllers\CuotaController;
-use App\Http\Controllers\PlanPagoController;
-use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\TelefonoController;
-use App\Http\Controllers\NotaVentaController;
-use App\Http\Controllers\PersonalController;
 use App\Http\Controllers\BitacoraController;
 use App\Http\Livewire\ShowMembresias;
 use App\Http\Controllers\BillingController;
 use Illuminate\Http\Request; //para invoice
-use App\Http\Controllers\ReservaController;
-use App\Http\Controllers\AreaController;
-use App\Http\Controllers\BookingController;
-use App\Http\Livewire\CreateProduct;
-use App\Http\Livewire\EditProduct;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProviderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,3 +63,7 @@ Route::get('/billings', [BillingController::class, 'index'])->middleware('auth')
 Route::get('/user/invoice/{invoice}', function (Request $request, string $invoiceId) {
     return $request->user()->downloadInvoice($invoiceId);
 });
+
+// Route::resource('products', ProductController::class)->names('products');
+Route::get('products', [ProductController::class,'index'])->name('products.index');
+Route::get('providers', [ProviderController::class,'index'])->name('providers.index');
