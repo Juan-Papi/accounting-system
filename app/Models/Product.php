@@ -17,10 +17,15 @@ class Product extends Model
         'stock',
         'img_url',
         'provider_id',
+        'category_id',
     ];
 
     public function provider()
     {
         return $this->belongsTo(Provider::class);
+    }
+    
+    public function category(){
+        return $this->belongsTo(Category::class);
     }
 }

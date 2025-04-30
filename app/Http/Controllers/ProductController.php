@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Provider;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,8 @@ class ProductController extends Controller
     public function index(){
         $providers = Provider::all();
         $products = Product::all();
-        return view('products.index', compact('products', 'providers'));
+        $categories = Category::all();
+        return view('products.index', compact('products', 'providers', 'categories'));
     }
 
 }

@@ -1,7 +1,7 @@
 <div>
     <div class="card">
         <div class="card-header">
-            <input wire:model.lazy="search" wire:keydown="limpiar_page" class="form-control w-100" placeholder="Escriba un nombre ..." type="text">
+            <input wire:model.debounce.500ms="search" class="form-control w-100" placeholder="Escriba un nombre ..." type="text">
         </div>
         <div class="card-header">
             <button wire:click="openModal" class="btn btn-primary mb-3">Crear Proveedor</button>

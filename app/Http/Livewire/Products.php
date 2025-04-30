@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\Product;
 use App\Models\Provider;
+use App\Models\Category;
 use Livewire\Component;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\Log;
@@ -15,30 +16,31 @@ class Products extends Component
 {
     use WithFileUploads;
 
-    public $name, $description, $price, $stock, $provider_id;
+    public $name, $description, $price, $stock, $provider_id, $category_id;
     public $img_url;
     public $productId;
     public $modal = false;
     public $providers;
+    public $categories;
 
     protected $listeners = ['delete' => 'delete'];
 
     use WithPagination;
-    public $buscar = '';
+    public $search = '';
     protected $paginationTheme = "bootstrap";
 
     public function render()
     {   
         $this->providers = Provider::all();
+        $this->categories = Category::all();
         $products = Product::with('provider')
-        ->when($this->buscar, function ($query) {
-            return $query->where('name', 'LIKE', '%' . $this->buscar . '%')
-                ->orWhere('description', 'LIKE', '%' . $this->buscar . '%')
-                ->orWhere('price', 'LIKE', '%' . $this->buscar . '%');
+        ->when($this->search, function ($query) {
+            return $query->where('name', 'LIKE', '%' . $this->search . '%')
+                ->orWhere('description', 'LIKE', '%' . $this->search . '%')
+                ->orWhere('price', 'LIKE', '%' . $this->search . '%');
         })
         ->orderBy('id', 'DESC')
         ->paginate(6);
-        // dd($products);
 
         return view('livewire.product.products', ['products' => $products] );    
     }
@@ -62,6 +64,7 @@ class Products extends Component
         $this->price = '';
         $this->stock = 0;
         $this->provider_id = '';
+        $this->category_id = '';
         $this->img_url = null;
         $this->productId = null;
     }
@@ -83,12 +86,10 @@ class Products extends Component
             if ($this->productId) {
                 $product = Product::find($this->productId);
                 $product->update($validatedData);
-                session()->flash('message', 'Producto actualizado correctamente');
                 $this->emit('productUpdated');  // Emitir el evento
 
             } else {
                 Product::create($validatedData);
-                session()->flash('message', 'Producto creado correctamente');
                 $this->emit('productCreated');  // Emitir el evento
             }
             $this->closeModal();
@@ -96,6 +97,7 @@ class Products extends Component
             
         } catch (\Exception $e) {
             Log::error('Error en save(): ' . $e->getMessage() . ' - ' . $e->getTraceAsString());
+            $this->emit('error', $e->getMessage());
         }
     }
 
@@ -107,6 +109,8 @@ class Products extends Component
         $this->price = $product->price;
         $this->stock = $product->stock;
         $this->provider_id = $product->provider_id;
+        $this->category_id = $product->category_id;
+        $this->img_url = $product->img_url;
         $this->modal = true;
     }
 
@@ -127,11 +131,8 @@ class Products extends Component
             'price' => $this->price,
             'stock' => $this->stock,
             'provider_id' => $this->provider_id,
+            'category_id' => $this->category_id,
         ];
-    }
-
-    public function limpiar_page(){
-        $this->resetPage();
     }
 
 }

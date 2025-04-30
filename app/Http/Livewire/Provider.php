@@ -16,7 +16,6 @@ class Provider extends Component
     public $providerId;
     public $modal = false;
     protected $listeners = ['delete' => 'delete'];
-    // public $search = '';
     public $search;
     protected $paginationTheme = "bootstrap";
 
@@ -61,6 +60,7 @@ class Provider extends Component
             $this->closeModal();
         } catch (\Exception $e) {
             Log::error('Error en save(): ' . $e->getMessage() . ' - ' . $e->getTraceAsString());
+            $this->emit('error', $e->getMessage());
         }
     }
 
@@ -90,8 +90,5 @@ class Provider extends Component
             'phone' => $this->phone,
             'email' => $this->email,
         ];
-    }
-    public function limpiar_page(){
-        $this->resetPage();
     }
 }

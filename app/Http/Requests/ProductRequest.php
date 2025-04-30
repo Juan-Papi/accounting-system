@@ -28,6 +28,7 @@ class ProductRequest extends FormRequest
             'stock' => 'required|integer|min:0',
             'img_url' => 'file|max:10240',
             'provider_id' => 'nullable',
+            'category_id' => 'required',
         ];
     }
             // 'provider_id' => 'required|exists:providers,id',
@@ -37,6 +38,8 @@ class ProductRequest extends FormRequest
             'name.required' => 'El nombre del producto es obligatorio.',
             'price.required' => 'El precio es obligatorio.',
             'provider_id.exists' => 'El proveedor seleccionado no es válido.',
+            'category_id.required' => 'La categoría es obligatoria.',
+            'category_id.exists' => 'La categoría seleccionada no es válida.',
         ];
     }
 
