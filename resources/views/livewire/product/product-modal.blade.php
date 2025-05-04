@@ -35,19 +35,31 @@
                         </div>
                     </div>
                     
-                    <!-- Proveedor -->
-                    <div class="mb-2">
-                        <label for="provider_id">Proveedor</label>
-                        <select id="provider_id" wire:model="provider_id" class="form-control">
-                            <option value="">Seleccione proveedor</option>
-                            @foreach($providers as $provider)
-                                <option value="{{ $provider->id }}">{{ $provider->name }}</option>
-                            @endforeach
+                    <div class="mb-2 row">
+                        <div class="col-md-6">
+                            <label for="provider_id">Proveedor</label>
+                            <select id="provider_id" wire:model="provider_id" class="form-control">
+                                <option value="">Seleccione proveedor</option>
+                                @foreach($providers as $provider)
+                                    <option value="{{ $provider->id }}">{{ $provider->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('provider_id') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
 
-                        </select>
-                        @error('provider_id') <span class="text-danger">{{ $message }}</span> @enderror
+                        <div class="col-md-6">
+                            <label for="category_id">Categoría</label>
+                            <select id="category_id" wire:model="category_id" class="form-control">
+                                <option value="">Seleccione categoría</option>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
                     </div>
-
+             
                     <div class="mb-2">
                         <label for="img_url">Imagen</label>
                         <input type="file"wire:model="img_url" id="img_url" class="form-control" accept="image/*">
@@ -61,7 +73,12 @@
                         <div class="mt-2 text-center">
                             <p class="text-sm text-gray-600">Vista previa:</p>
                             <div class="flex justify-center items-center">
-                                <img src="{{ $img_url->temporaryUrl() }}" class="img-fluid rounded shadow" style="max-height: 200px;" alt="Vista previa de imagen">
+                                @if (is_string($img_url))
+                                    <img src="{{ asset('storage/' . $img_url) }}" class="img-fluid rounded shadow" style="max-height: 200px;" alt="Vista previa de imagen">
+                                @else
+                                <img src="{{ $img_url->temporaryUrl() }}" class="img-fluid rounded shadow" style="max-height: 200px;" alt="Vista previa de imagen">                                    
+                                @endif
+                                
                             </div>
                         </div>
                         @endif

@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\BitacoraController;
 use App\Http\Livewire\ShowMembresias;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request; //para invoice
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
@@ -67,3 +68,4 @@ Route::get('/user/invoice/{invoice}', function (Request $request, string $invoic
 // Route::resource('products', ProductController::class)->names('products');
 Route::get('products', [ProductController::class,'index'])->name('products.index');
 Route::get('providers', [ProviderController::class,'index'])->name('providers.index');
+Route::get('categories', [CategoryController::class,'index'])->name('categories.index');

@@ -384,6 +384,14 @@ return [
                     'active' => ['providers*'], 
                 //    'can' => 'Listar usuarios',
                 ],
+
+                [
+                    'text' => 'Categorías de Productos',
+                    'route'  => 'categories.index',
+                    'icon'    => 'fas fa-fw fa-tags',
+                    'active' => ['categories*'], 
+                //    'can' => 'Listar usuarios',
+                ],
             ],
         ],
 
