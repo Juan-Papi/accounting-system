@@ -365,6 +365,27 @@ return [
                 ],
             ],
         ],
+        [
+            'text'    => 'Inventario',
+            'icon'    => 'fas fa-fw fa-box-open',
+            // 'can' => 'Administrar usuarios',
+            'submenu' => [
+                [
+                    'text' => 'Productos',
+                    'route'  => 'products.index',
+                    'icon'    => 'fas fa-fw fa-box',
+                    'active' => ['products*'], 
+                //    'can' => 'Listar usuarios',
+                ],
+                [
+                    'text' => 'Proveedores',
+                    'route'  => 'providers.index',
+                    'icon'    => 'fas fa-fw fa-truck',
+                    'active' => ['providers*'], 
+                //    'can' => 'Listar usuarios',
+                ],
+            ],
+        ],
 
         [
             'text'    => 'multilevel',
