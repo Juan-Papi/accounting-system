@@ -144,161 +144,47 @@
 
     </section>
 
-    <section class="mt-24">
-        <h1 class="text-gray-500 text-center text-3xl mb-6">
-            Destacadas
-        </h1>
-
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/area1.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/3pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/4pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/5pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-        </div>
-
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/6pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/7pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/8pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/9pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-        </div>
-
-    </section>
+    @php
+        $plans = \App\Models\Plan::all();
+    @endphp
+    
 
     {{-- nueva section --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
-        {{-- <div class="grid grid-cols-3 gap-6">
-            hola mundo
-        </div> --}}
-        {{-- @livewire('subscription') --}}
-
-        <article class="mb-12">
-            <p class="mb-3 text-gray-500 dark:text-gray-400">Track work across the enterprise through an open,
-                collaborative platform. Link issues across Jira and ingest data from other software development tools,
-                so your IT support and operations teams have richer contextual information to rapidly respond to
-                requests, incidents, and changes.</p>
-            <div class="grid grid-cols-1 md:gap-6 md:grid-cols-2">
-                <p class="mb-3 text-gray-500 dark:text-gray-400">Track work across the enterprise through an open,
-                    collaborative platform. Link issues across Jira and ingest data from other software development
-                    tools, so your IT support and operations teams have richer contextual information to rapidly respond
-                    to requests, incidents, and changes.</p>
-                <blockquote class="mb-3">
-                    <p class="text-xl italic font-semibold text-gray-900 dark:text-white">" Flowbite is just awesome.
-                        It contains tons of predesigned components and pages starting from login screen to complex
-                        dashboard. Perfect choice for your next SaaS application. "</p>
-                </blockquote>
-            </div>
-            <p class="mb-3 text-gray-500 dark:text-gray-400">Deliver great service experiences fast - without the
-                complexity of traditional ITSM solutions.Accelerate critical development work, eliminate toil, and
-                deploy changes with ease, with a complete audit trail for every change.</p>
-        </article>
-
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
+        <div class="row justify-content-center text-black">
+            @if ($plans->count() > 0)
+                @foreach ($plans as $plan)
+                    <div class="col-12 col-md-6 col-lg-4 mb-8">
+                        <div class="card border-t-4 border-blue-500 h-full shadow-lg bg-white rounded-lg">
+                            <div class="card-body p-6">
+                                <h5 class="card-title text-xl font-semibold text-center text-gray-900">
+                                    Plan <strong>{{$plan->name}}</strong>
+                                </h5>
+                                <p class="text-center text-gray-500">Ideal para usuarios individuales.</p>
+                                <p class="text-2xl font-bold text-center text-blue-600">
+                                    Bs. {{$plan->price}}<span class="text-sm text-gray-500">/mes</span>
+                                </p>
+                                <ul class="list-unstyled mb-4 text-center">
+                                    @foreach ($plan->detailPlans as $detail)
+                                        <li class="text-gray-700">✔️{{$detail->description}}</li>
+                                    @endforeach
+                                </ul>
+                                <button id="btn-suscription" 
+                                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition duration-300 ease-in-out transform hover:scale-105">
+                                    Suscribirse
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="col">
+                    <div class="alert alert-warning text-center" role="alert">
+                        No hay planes disponibles en este momento.
+                    </div>
+                </div>
+            @endif
+        </div>
         <footer class="bg-white dark:bg-gray-900">
             <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div class="md:flex md:justify-between">
@@ -406,3 +292,22 @@
 
 
 </x-app-layout>
+<script>
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('btn-suscription').addEventListener('click', function () {
+            Swal.fire({
+                title: '¿Deseas registrarte?',
+                text: 'Para adquirir este plan debes estar registrado.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, Registrarme',
+                cancelButtonText: 'No, en otra ocasión'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Reemplaza "/registro" por la ruta que desees
+                    window.location.href = "{{ route('register') }}";
+                }
+            });
+        });
+    });
+</script>

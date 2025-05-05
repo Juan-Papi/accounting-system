@@ -67,24 +67,11 @@ class User extends Authenticatable
     ];
 
     //relacion de uno a muchos
-    public function notasVenta()
-    {
-        return $this->hasMany(NotaVenta::class);
-    }
-    //relacion uno a uno
-    public function Personal()
-    {
-        return $this->hasOne(Personal::class);
-    }
+   
     //relacion de uno a muchos
     public function bitacoras()
     {
         return $this->hasMany(Bitacora::class);
-    }
-    //relacion de uno a muchos
-    public function reservas()
-    {
-        return $this->hasMany(Reserva::class);
     }
 
     protected static function booted(): void
@@ -94,5 +81,9 @@ class User extends Authenticatable
                 $customer->syncStripeCustomerDetails();
             }
         }));
+    }
+
+    public function planSubscriptions(){
+        return $this->hasMany(PlanSubscription::class);
     }
 }

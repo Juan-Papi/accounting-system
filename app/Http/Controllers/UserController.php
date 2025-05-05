@@ -44,7 +44,7 @@ class UserController extends Controller
         $bitacora->user_id = auth()->id();
         $bitacora->save();
 
-        return redirect()->route('admin.users.index')->with('info', 'El nuevo USUARIO se creo satisfactoriamente!');
+        return redirect()->route('admin.users.index')->with('info', 'El nuevo USUARIO se creó satisfactoriamente!');
     }
     public function rol(User $user)
     {

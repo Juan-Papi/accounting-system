@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Fitnet Sport Center</title>
+    <title>Sistema Contable</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -56,6 +56,9 @@
     @stack('modals')
 
     @livewireScripts
+
+    <!-- sweetalert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     {{-- por la pasarela de pago --}}
     {{-- con los stack nosotros decimos que mas adelante cuando extendamos la plantilla podamos pasar codigo css o javascript --}}

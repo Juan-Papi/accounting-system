@@ -10,6 +10,11 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request; //para invoice
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\SubscriptionController;
+use App\Models\Plan;
+use App\Models\PlanSubscription as ModelPlanSubscription;
+
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,7 +27,8 @@ use App\Http\Controllers\ProviderController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $plans = Plan::all();
+    return view('welcome', compact('plans'));
 })->name('home');
 
 Route::middleware([
@@ -31,7 +37,14 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+
+        $activeSubscription = ModelPlanSubscription::where('user_id', Auth::user()->id)
+        ->where('status', 'active')
+        ->where('end_time', '>', now())
+        ->first();
+
+        $plans = Plan::all();
+        return view('dashboard',compact('plans','activeSubscription'));
     })->middleware('can:Ver dashboard')->name('dashboard');
 });
 
@@ -69,3 +82,7 @@ Route::get('/user/invoice/{invoice}', function (Request $request, string $invoic
 Route::get('products', [ProductController::class,'index'])->name('products.index');
 Route::get('providers', [ProviderController::class,'index'])->name('providers.index');
 Route::get('categories', [CategoryController::class,'index'])->name('categories.index');
+
+// Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
+
+Route::post('/generar-qr', [SubscriptionController::class, 'obtenerQr'])->name('veripagos.qr');
