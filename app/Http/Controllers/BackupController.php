@@ -71,10 +71,30 @@ class BackupController extends Controller
     {
         Log::info('Datos recibidos en la request 1:', $request->all());
         Log::info('Iniciando actualización de configuración de backups.');
-        $validated = $request->validate([
-            'frequency' => 'nullable|in:daily,weekly,monthly',
-            'time' => 'nullable|date_format:H:i',
-        ]);
+        $enabled = $request->has('enabled');
+        if ($enabled) {
+            Log::info('Valor de "frequency" en la request:', ['frequency' => $request->frequency]);
+            Log::info('Valor de "time" en la request:', ['time' => $request->time]);
+        }
+        Log::info('Estado de "enabled": ' . ($enabled ? 'true' : 'false'));
+        $rules = [
+            'frequency' => $enabled ? 'required|in:daily,weekly,monthly' : 'nullable|in:daily,weekly,monthly',
+            'time' => $enabled ? 'required|date_format:H:i,H:i:s' : 'nullable|date_format:H:i,H:i:s',
+        ];
+        try {
+            $request->validate($rules);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Error de validación al actualizar la configuración de backups.', [
+                'errors' => $e->errors(),
+                'input' => $request->all()
+            ]);
+            return back()->withErrors($e->errors())->withInput();
+        }
+        Log::info('Paso la validación de la configuración de backups.');
+        if ($enabled) {
+            Log::info('Valor de "frequency" en la request:', ['frequency' => $request->frequency]);
+            Log::info('Valor de "time" en la request:', ['time' => $request->time]);
+        }
         Log::info('Datos recibidos en la request:', $request->all());
 
         // El checkbox enabled solo envía un valor cuando está marcado
