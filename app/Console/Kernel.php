@@ -5,14 +5,15 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\BackupConfig;
-use App\Console\Commands\DbBackupCommand;
+//use App\Console\Commands\DbBackupCommand;
 use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
 
     protected $commands = [
-        DbBackupCommand::class,
+       // DbBackupCommand::class,
+        \App\Console\Commands\DbBackupCommand::class,
     ];
 
     /**
@@ -46,6 +47,7 @@ class Kernel extends ConsoleKernel
                         break;
                 }
             }
+            $command->timezone('America/La_Paz')->appendOutputTo(storage_path('logs/backups.log'));
         } catch (\Exception $e) {
             Log::error('Error al configurar el scheduler de backups', [
                 'exception' => $e->getMessage()

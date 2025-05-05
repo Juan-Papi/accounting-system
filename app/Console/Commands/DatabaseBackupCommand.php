@@ -14,6 +14,9 @@ class DbBackupCommand extends Command
 
     public function handle()
     {
+        date_default_timezone_set('America/La_Paz');
+        $now = Carbon::now('America/La_Paz')->format('Y-m-d-H-i-s');
+
         try {
             $this->info('Iniciando proceso de backup...');
             Log::info('Iniciando proceso de backup desde comando Artisan');
@@ -24,7 +27,7 @@ class DbBackupCommand extends Command
             }
 
             // Generate filename
-            $now = now()->format('Y-m-d-H-i-s');
+            //$now = now()->format('Y-m-d-H-i-s');
 
             if ($frequency = $this->option('frequency')) {
                 $filename = 'auto-' . $frequency . '-' . $now;
