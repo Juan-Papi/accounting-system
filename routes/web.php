@@ -84,8 +84,6 @@ Route::get('products', [ProductController::class,'index'])->name('products.index
 Route::get('providers', [ProviderController::class,'index'])->name('providers.index');
 Route::get('categories', [CategoryController::class,'index'])->name('categories.index');
 
-// Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
-
 Route::post('/generar-qr', [SubscriptionController::class, 'obtenerQr'])->name('veripagos.qr');
 
 Route::group(['prefix' => 'backup'], function () {
