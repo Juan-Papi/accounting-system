@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('backup_configs', function (Blueprint $table) {
             $table->id();
-            $table->string('frequency')->default('weekly')->comment('daily, weekly, monthly');
+            $table->string('frequency')->default('weekly');
             $table->time('time')->default('00:00');
             $table->boolean('enabled')->default(false);
             $table->timestamps();

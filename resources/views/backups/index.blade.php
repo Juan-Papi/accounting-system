@@ -3,7 +3,6 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    {{-- <h1>Backup - Copia de seguridad</h1> --}}
     <br>
 @stop
 
@@ -14,12 +13,48 @@
                 <h1>Gestión de Backups</h1>
             </div>
             <div class="col-md-4 text-right">
-                <form action="{{ route('backups.create-instant') }}" method="POST">
+                <form id="backupForm" action="{{ route('backups.create-instant') }}" method="POST">
                     @csrf
-                    <button type="submit" class="btn btn-primary">
+                    <button id="backupButton" type="submit" class="btn btn-primary">
                         <i class="fas fa-plus"></i> Backup Instantáneo
                     </button>
                 </form>
+            </div>
+        </div>
+
+        <!-- Mensajes de alerta -->
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        <!-- Modal de carga -->
+        <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static"
+            data-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center p-5">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="sr-only">Cargando...</span>
+                        </div>
+                        <h4>Creando backup</h4>
+                        <p class="mb-0">Por favor espere mientras se crea el backup de la base de datos. Este proceso
+                            puede tomar varios minutos dependiendo del tamaño de su base de datos.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -92,14 +127,6 @@
                                                 class="btn btn-sm btn-success" title="Descargar">
                                                 <i class="fas fa-download"></i>
                                             </a>
-                                            <form action="{{ route('backups.destroy', $backup['name']) }}" method="POST"
-                                                style="display:inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -118,20 +145,50 @@
 
 @section('js')
     <script>
-        console.log('Hi!');
+        // Agregar esto al final de tu vista o en un archivo JS separado
         document.addEventListener('DOMContentLoaded', function() {
+            // Para mostrar el modal de carga cuando se inicia un backup instantáneo
+            const backupForm = document.getElementById('backupForm');
+            if (backupForm) {
+                backupForm.addEventListener('submit', function() {
+                    $('#loadingModal').modal('show');
+                });
+            }
+
+            // Auto-ocultar las alertas después de 5 segundos
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                setTimeout(function() {
+                    $(alert).alert('close');
+                }, 5000);
+            });
+
+            // Habilitar/deshabilitar los campos de configuración según el estado del checkbox
             const enabledCheckbox = document.getElementById('enabled');
             const frequencySelect = document.getElementById('frequency');
             const timeInput = document.getElementById('time');
 
-            function toggleFields() {
+            function toggleConfigFields() {
                 const isEnabled = enabledCheckbox.checked;
                 frequencySelect.disabled = !isEnabled;
                 timeInput.disabled = !isEnabled;
+
+                if (!isEnabled) {
+                    frequencySelect.parentElement.classList.add('text-muted');
+                    timeInput.parentElement.classList.add('text-muted');
+                } else {
+                    frequencySelect.parentElement.classList.remove('text-muted');
+                    timeInput.parentElement.classList.remove('text-muted');
+                }
             }
 
-            enabledCheckbox.addEventListener('change', toggleFields);
-            toggleFields(); // Ejecutar al cargar la página
+            if (enabledCheckbox) {
+                // Ejecutar al cargar la página
+                toggleConfigFields();
+
+                // Ejecutar cuando cambie el estado del checkbox
+                enabledCheckbox.addEventListener('change', toggleConfigFields);
+            }
         });
     </script>
 @stop

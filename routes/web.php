@@ -76,5 +76,4 @@ Route::group(['prefix' => 'backup'], function () {
     Route::post('/instant', [BackupController::class, 'createInstant'])->name('backups.create-instant');
     Route::post('/config', [BackupController::class, 'updateConfig'])->name('backups.update-config');
     Route::get('/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
-    Route::delete('/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy');
 });
