@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+
 class PermissionSeeder extends Seeder
 {
     /**
@@ -12,40 +14,74 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'Crear ventas']);//1
-        Permission::create(['name' => 'Listar ventas']);//2
-        Permission::create(['name' => 'Actualizar ventas']);//3
-        Permission::create(['name' => 'Eliminar ventas']);//4
+    
+        $adminPermissions = [
+            // Roles
+            'Crear role',
+            'Listar role',
+            'Editar role',
+            'Eliminar role',
+    
+            'Listar usuarios',
+            'Editar usuarios',
+            'Crear usuarios',
+            'Eliminar usuarios',
+            'Administrar usuarios',
+            
+            'Ver dashboard',
 
-        Permission::create(['name' => 'Ver dashboard']);//5
+            'Vistar bitacora',
+        ];
 
-        Permission::create(['name' => 'Crear role']);//6
-        Permission::create(['name' => 'Listar role']);//7
-        Permission::create(['name' => 'Editar role']);//8
-        Permission::create(['name' => 'Eliminar role']);//9
+        $managerPermissions = [
+            'Listar usuarios',
+            'Editar usuarios',
+            'Crear usuarios',
+            'Eliminar usuarios',
+            'Administrar usuarios',
+            
+            'Crear compras',
+            'Listar compras',
+            'Actualizar compras',
+            'Eliminar compras',
 
-        Permission::create(['name' => 'Listar usuarios']);//10
-        Permission::create(['name' => 'Editar usuarios']);//11
-        Permission::create(['name' => 'Crear usuarios']);//12
-        Permission::create(['name' => 'Eliminar usuarios']);//13
+            'Crear ventas',
+            'Listar ventas',
+            'Actualizar ventas',
+            'Eliminar ventas',
 
-        Permission::create(['name' => 'Listar bitacora']);//14
-        Permission::create(['name' => 'Administrar usuarios']);//15
+            'Ver dashboard'
+        ];
+
+        $executivePermissions = [
+            'Crear ventas',
+            'Listar ventas',
+            'Actualizar ventas',
+            'Eliminar ventas',
+
+            'Ver dashboard'
+        ];
+
+        foreach ($adminPermissions as $name) {
+            Permission::firstOrCreate(['name' => $name]);
+        }
+
+        foreach ($managerPermissions as $name) {
+            Permission::firstOrCreate(['name' => $name]);
+        }
+
+        foreach ($executivePermissions as $name) {
+            Permission::firstOrCreate(['name' => $name]);
+        }
+
+        $admin = Role::where('name', 'Admin')->first();
+        $manager = Role::where('name', 'Gerente')->first();
+        $executive = Role::where('name', 'Ejecutivo de ventas')->first();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        $admin->syncPermissions($adminPermissions);
+        $manager->syncPermissions($managerPermissions);
+        $executive->syncPermissions($executivePermissions);
 
     }
 }

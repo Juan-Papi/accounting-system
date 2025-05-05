@@ -144,160 +144,62 @@
 
     </section>
 
-    <section class="mt-24">
-        <h1 class="text-gray-500 text-center text-3xl mb-6">
-            Destacadas
-        </h1>
 
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/area1.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/3pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/4pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/5pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-        </div>
-
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/6pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/7pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/8pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/equipos/9pesas.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-        </div>
-
-    </section>
 
     {{-- nueva section --}}
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
-        {{-- <div class="grid grid-cols-3 gap-6">
-            hola mundo
-        </div> --}}
-        {{-- @livewire('subscription') --}}
+                    
+        <div class="min-h-screen bg-gray-100 py-10 px-4">
+            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Planes de Suscripción</h2>
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    
+                <!-- Plan Básico -->
+                <div class="bg-white rounded-2xl shadow p-8 border-t-4 border-blue-500">
+                <h3 class="text-2xl font-semibold mb-4">Básico</h3>
+                <p class="text-gray-600 mb-6">Ideal para usuarios individuales.</p>
+                <p class="text-3xl font-bold mb-6">$9<span class="text-sm text-gray-500">/mes</span></p>
+                <ul class="text-gray-700 space-y-2 mb-6">
+                    <li>✔️ Acceso limitado</li>
+                    <li>✔️ 5 descargas al mes</li>
+                    <li>✔️ Soporte por email</li>
+                </ul>
+        
+                <button id="btn-suscription" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition">Suscribirse</button>
+                
+                </div>
 
-        <article class="mb-12">
-            <p class="mb-3 text-gray-500 dark:text-gray-400">Track work across the enterprise through an open,
-                collaborative platform. Link issues across Jira and ingest data from other software development tools,
-                so your IT support and operations teams have richer contextual information to rapidly respond to
-                requests, incidents, and changes.</p>
-            <div class="grid grid-cols-1 md:gap-6 md:grid-cols-2">
-                <p class="mb-3 text-gray-500 dark:text-gray-400">Track work across the enterprise through an open,
-                    collaborative platform. Link issues across Jira and ingest data from other software development
-                    tools, so your IT support and operations teams have richer contextual information to rapidly respond
-                    to requests, incidents, and changes.</p>
-                <blockquote class="mb-3">
-                    <p class="text-xl italic font-semibold text-gray-900 dark:text-white">" Flowbite is just awesome.
-                        It contains tons of predesigned components and pages starting from login screen to complex
-                        dashboard. Perfect choice for your next SaaS application. "</p>
-                </blockquote>
+                <!-- Plan Pro -->
+                <div class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-green-500 scale-105">
+                <h3 class="text-2xl font-semibold mb-4">Pro</h3>
+                <p class="text-gray-600 mb-6">Para usuarios avanzados.</p>
+                <p class="text-3xl font-bold mb-6">$19<span class="text-sm text-gray-500">/mes</span></p>
+                <ul class="text-gray-700 space-y-2 mb-6">
+                    <li>✔️ Acceso completo</li>
+                    <li>✔️ Descargas ilimitadas</li>
+                    <li>✔️ Soporte prioritario</li>
+                </ul>
+                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl transition">Suscribirse</button>
+                </div>
+
+                <!-- Plan Empresarial -->
+                <div class="bg-white rounded-2xl shadow p-8 border-t-4 border-purple-500">
+                    <h3 class="text-2xl font-semibold mb-4">Empresarial</h3>
+                    <p class="text-gray-600 mb-6">Para equipos y empresas.</p>
+                    <p class="text-3xl font-bold mb-6">$49<span class="text-sm text-gray-500">/mes</span></p>
+                    <ul class="text-gray-700 space-y-2 mb-6">
+                        <li>✔️ Todo lo del plan Pro</li>
+                        <li>✔️ Múltiples usuarios</li>
+                        <li>✔️ Consultor dedicado</li>
+                    </ul>
+                    <button class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-xl transition">Contactar</button>
+                </div>
+
             </div>
-            <p class="mb-3 text-gray-500 dark:text-gray-400">Deliver great service experiences fast - without the
-                complexity of traditional ITSM solutions.Accelerate critical development work, eliminate toil, and
-                deploy changes with ease, with a complete audit trail for every change.</p>
-        </article>
+        </div>
+
+
+
+
 
         <footer class="bg-white dark:bg-gray-900">
             <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -406,3 +308,22 @@
 
 
 </x-app-layout>
+<script>
+      document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById('btn-suscription').addEventListener('click', function () {
+            Swal.fire({
+                title: '¿Deseas registrarte?',
+                text: 'Para adquirir este plan debes estar registrado.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Sí, Regitrarme',
+                cancelButtonText: 'No, en otra ocasiòn'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Reemplaza "/registro" por la ruta que desees
+                    window.location.href = "{{ route('register') }}";
+                }
+            });
+        });
+    });
+</script>
