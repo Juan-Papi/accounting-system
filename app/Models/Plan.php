@@ -24,4 +24,7 @@ class Plan extends Model
         return $this->hasMany(PlanSubscription::class);
     }
 
+    public function qr(){
+        return $this->hasMany(Qr::class);
+    }
 }

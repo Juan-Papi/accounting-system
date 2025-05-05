@@ -8,7 +8,6 @@
 
 @section('content')
     @if (Auth::user()->roles->count() > 0)
-        <p>Roles asignados para {{Auth::user()->name}} :</p>
         <ul>
             @foreach (Auth::user()->roles as $role)
                 <li>{{ $role->name }}</li>
@@ -31,33 +30,56 @@
         Swal.fire('Error', 'Error al generar Qr. Inténtelo más tarde', 'error');
     });
 
-    Livewire.on('productUpdated', () => {
-        Swal.fire('¡Éxito!', 'Producto actualizado correctamente.', 'success');
-    });
 
-    Livewire.on('productDeleted', () => {
-        Swal.fire('¡Eliminado!', 'Producto eliminado correctamente.', 'success');
-    });
-
-    Livewire.on('productDeleteError', () => {
-        Swal.fire('Error', 'No se pudo eliminar el producto.', 'error');
-    });
-
-    Livewire.on('confirmDelete', productId => {
+    Livewire.on('paymentVerified', () => {
         Swal.fire({
-            title: '¿Estás seguro?',
-            text: "Esta acción no se puede deshacer",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminarlo'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Livewire.emit('delete', productId);
-            }
+            icon: 'success',
+            title: '¡Suscripción confirmada!',
+            text: 'Tu pago fue validado exitosamente.',
         });
     });
+
+    Livewire.on('paymentFailed', (message) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en la suscripción',
+            text: message,
+        });
+    });
+    Livewire.on('paymentPending', (message) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Pago no verificado',
+            text: 'Pago pendiente. Por favor, realiza el pago.',
+        });
+    });
+
+   Livewire.on('loading', () => {
+        console.log("Evento 'loading' recibido");
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('qrImageContainer').style.display = 'block';
+            
+        }, 5000); 
+    });
+
+    
+   Livewire.on('loadingVerifyPay', () => {
+        console.log("Evento 'loadingVerifyPay' recibido");
+        const element = document.getElementById('loadingVerifyPay');
+        if (element) {
+            element.style.display = 'flex';
+        } else {
+            console.error('Elemento no encontrado');
+        }
+        setTimeout(() => {
+            element.style.display = 'none';
+        }, 7000); 
+    });
+
+
+
     Livewire.on('error', function (error) {
         console.error(error);
     });

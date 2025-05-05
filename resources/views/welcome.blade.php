@@ -144,63 +144,47 @@
 
     </section>
 
-
+    @php
+        $plans = \App\Models\Plan::all();
+    @endphp
+    
 
     {{-- nueva section --}}
-    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
-                    
-        <div class="min-h-screen bg-gray-100 py-10 px-4">
-            <h2 class="text-4xl font-bold text-center mb-12 text-gray-800">Planes de Suscripción</h2>
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-    
-                <!-- Plan Básico -->
-                <div class="bg-white rounded-2xl shadow p-8 border-t-4 border-blue-500">
-                <h3 class="text-2xl font-semibold mb-4">Básico</h3>
-                <p class="text-gray-600 mb-6">Ideal para usuarios individuales.</p>
-                <p class="text-3xl font-bold mb-6">$9<span class="text-sm text-gray-500">/mes</span></p>
-                <ul class="text-gray-700 space-y-2 mb-6">
-                    <li>✔️ Acceso limitado</li>
-                    <li>✔️ 5 descargas al mes</li>
-                    <li>✔️ Soporte por email</li>
-                </ul>
-        
-                <button id="btn-suscription" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition">Suscribirse</button>
-                
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
+        <div class="row justify-content-center text-black">
+            @if ($plans->count() > 0)
+                @foreach ($plans as $plan)
+                    <div class="col-12 col-md-6 col-lg-4 mb-8">
+                        <div class="card border-t-4 border-blue-500 h-full shadow-lg bg-white rounded-lg">
+                            <div class="card-body p-6">
+                                <h5 class="card-title text-xl font-semibold text-center text-gray-900">
+                                    Plan <strong>{{$plan->name}}</strong>
+                                </h5>
+                                <p class="text-center text-gray-500">Ideal para usuarios individuales.</p>
+                                <p class="text-2xl font-bold text-center text-blue-600">
+                                    Bs. {{$plan->price}}<span class="text-sm text-gray-500">/mes</span>
+                                </p>
+                                <ul class="list-unstyled mb-4 text-center">
+                                    @foreach ($plan->detailPlans as $detail)
+                                        <li class="text-gray-700">✔️{{$detail->description}}</li>
+                                    @endforeach
+                                </ul>
+                                <button id="btn-suscription" 
+                                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition duration-300 ease-in-out transform hover:scale-105">
+                                    Suscribirse
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <div class="col">
+                    <div class="alert alert-warning text-center" role="alert">
+                        No hay planes disponibles en este momento.
+                    </div>
                 </div>
-
-                <!-- Plan Pro -->
-                <div class="bg-white rounded-2xl shadow-lg p-8 border-t-4 border-green-500 scale-105">
-                <h3 class="text-2xl font-semibold mb-4">Pro</h3>
-                <p class="text-gray-600 mb-6">Para usuarios avanzados.</p>
-                <p class="text-3xl font-bold mb-6">$19<span class="text-sm text-gray-500">/mes</span></p>
-                <ul class="text-gray-700 space-y-2 mb-6">
-                    <li>✔️ Acceso completo</li>
-                    <li>✔️ Descargas ilimitadas</li>
-                    <li>✔️ Soporte prioritario</li>
-                </ul>
-                <button class="w-full bg-green-500 hover:bg-green-600 text-white py-2 rounded-xl transition">Suscribirse</button>
-                </div>
-
-                <!-- Plan Empresarial -->
-                <div class="bg-white rounded-2xl shadow p-8 border-t-4 border-purple-500">
-                    <h3 class="text-2xl font-semibold mb-4">Empresarial</h3>
-                    <p class="text-gray-600 mb-6">Para equipos y empresas.</p>
-                    <p class="text-3xl font-bold mb-6">$49<span class="text-sm text-gray-500">/mes</span></p>
-                    <ul class="text-gray-700 space-y-2 mb-6">
-                        <li>✔️ Todo lo del plan Pro</li>
-                        <li>✔️ Múltiples usuarios</li>
-                        <li>✔️ Consultor dedicado</li>
-                    </ul>
-                    <button class="w-full bg-purple-500 hover:bg-purple-600 text-white py-2 rounded-xl transition">Contactar</button>
-                </div>
-
-            </div>
+            @endif
         </div>
-
-
-
-
-
         <footer class="bg-white dark:bg-gray-900">
             <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div class="md:flex md:justify-between">
@@ -316,8 +300,8 @@
                 text: 'Para adquirir este plan debes estar registrado.',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Sí, Regitrarme',
-                cancelButtonText: 'No, en otra ocasiòn'
+                confirmButtonText: 'Sí, Registrarme',
+                cancelButtonText: 'No, en otra ocasión'
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Reemplaza "/registro" por la ruta que desees
