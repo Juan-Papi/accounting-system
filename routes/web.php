@@ -87,3 +87,10 @@ Route::get('categories', [CategoryController::class,'index'])->name('categories.
 // Route::post('/subscribe', [SubscriptionController::class, 'subscribe'])->name('subscribe');
 
 Route::post('/generar-qr', [SubscriptionController::class, 'obtenerQr'])->name('veripagos.qr');
+
+Route::group(['prefix' => 'backup'], function () {
+    Route::get('/', [BackupController::class, 'index'])->name('backups.index');
+    Route::post('/instant', [BackupController::class, 'createInstant'])->name('backups.create-instant');
+    Route::post('/config', [BackupController::class, 'updateConfig'])->name('backups.update-config');
+    Route::get('/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
+});
