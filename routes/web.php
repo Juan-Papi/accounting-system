@@ -15,6 +15,7 @@ use App\Models\Plan;
 use App\Models\PlanSubscription as ModelPlanSubscription;
 
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\BackupController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
