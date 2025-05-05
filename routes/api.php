@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClientController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,4 +22,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post("/logout", [AuthController::class, "logout"]);
     Route::get("/check-status", [AuthController::class, "checkAuthStatus"]);
+    
 });
+Route::apiResource('/product', ProductController::class);
+
