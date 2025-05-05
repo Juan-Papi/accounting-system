@@ -38,12 +38,15 @@ class Kernel extends ConsoleKernel
                 switch ($config->frequency) {
                     case 'daily':
                         $command->dailyAt($config->time);
+                        Log::info('Copia de seguridad diaria');
                         break;
                     case 'weekly':
                         $command->weeklyOn(1, $config->time); // 1 = Lunes
+                        Log::info('Copia de seguridad semanal');
                         break;
                     case 'monthly':
                         $command->monthlyOn(1, $config->time); // Día 1 de cada mes
+                        Log::info('Copia de seguridad mensual');
                         break;
                 }
             }
