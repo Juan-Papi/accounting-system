@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
 
     protected $commands = [
        // DbBackupCommand::class,
-        \App\Console\Commands\DbBackupCommand::class,
+        \App\Console\Commands\DatabaseBackupCommand::class,
     ];
 
     /**

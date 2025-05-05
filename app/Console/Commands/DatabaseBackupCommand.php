@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class DbBackupCommand extends Command
+class DatabaseBackupCommand extends Command
 {
     protected $signature = 'db:backup {--frequency= : Optional frequency (daily, weekly, monthly)}';
     protected $description = 'Create a database backup';
