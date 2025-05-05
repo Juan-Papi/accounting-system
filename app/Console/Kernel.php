@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         // Obtener configuración de backups
         try {
             $config = BackupConfig::getSettings();
+            $config->refresh(); // Asegurarse de obtener los datos más recientes de la base de datos
 
             // Si los backups automáticos están habilitados
             if ($config->enabled) {
