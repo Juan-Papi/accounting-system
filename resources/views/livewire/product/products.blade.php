@@ -18,6 +18,7 @@
                         <tr class="text-center">
                             <th>Imagen</th>
                             <th>Nombre</th>
+                            <th>Precio de compra</th>
                             <th>Precio</th>
                             <th>Stock</th>
                             <th>Proveedor</th>
@@ -35,6 +36,7 @@
                                     @endif
                                 </td>
                                 <td class="align-middle">{{ $product->name }}</td>
+                                <td class="align-middle">{{ $product->purchase_price ?? 'Sin registro' }}</td>
                                 <td class="align-middle">{{ $product->price }}</td>
                                 <td class="align-middle">{{ $product->stock }}</td>
                                 <td class="align-middle">{{ $product->provider->name }}</td>

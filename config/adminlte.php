@@ -392,6 +392,35 @@ return [
                     'active' => ['categories*'],
                     //    'can' => 'Listar usuarios',
                 ],
+                [
+                    'text' => 'Pedidos',
+                    'route'  => 'orders.index',
+                    'icon'    => 'fas fa-fw fa-shopping-cart',
+                    'active' => ['orders*'],
+                    //    'can' => 'Listar usuarios',
+                ],
+            ],
+        ],
+
+        [
+            'text'    => 'Contabilidad',
+            'icon'    => 'fas fa-fw fa-calculator',
+            // 'can' => 'Administrar usuarios',
+            'submenu' => [
+                [
+                    'text' => 'Cuentas',
+                    'route'  => 'accounts.index',
+                    'icon'    => 'fas fa-fw fa-box',
+                    'active' => ['accounts*'],
+                    //    'can' => 'Listar usuarios',
+                ],
+                [
+                    'text' => 'Libro Diario',
+                    // 'route'  => '.index',
+                    'icon'    => 'fas fa-fw fa-box',
+                    // 'active' => ['accounts*'],
+                    //    'can' => 'Listar usuarios',
+                ],
             ],
         ],
 

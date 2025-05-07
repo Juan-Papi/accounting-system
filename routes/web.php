@@ -7,15 +7,19 @@ use App\Http\Controllers\BitacoraController;
 use App\Http\Livewire\ShowMembresias;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request; //para invoice
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\AccountingAccountController;
 use App\Models\Plan;
 use App\Models\PlanSubscription as ModelPlanSubscription;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BackupController;
+use App\Models\Order;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -92,3 +96,6 @@ Route::group(['prefix' => 'backup'], function () {
     Route::post('/config', [BackupController::class, 'updateConfig'])->name('backups.update-config');
     Route::get('/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
 });
+
+Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
+Route::get('/accounts',[AccountingAccountController::class,'index'])->name('accounts.index');

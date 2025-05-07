@@ -14,19 +14,25 @@ class Product extends Model
         'name',
         'description',
         'price',
+        'purchase_price',
         'stock',
         'img_url',
         'provider_id',
         'category_id',
     ];
 
-    public function provider()
-    {
+    public function provider(){
         return $this->belongsTo(Provider::class);
     }
     
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+
+    public function orders(){
+        return $this->belongsToMany(Order::class, 'product_orders')
+                    ->withPivot('quantity', 'subtotal', 'total_price')
+                    ->withTimestamps();
     }
  
     public function scopeFilterByName($query, $name){

@@ -16,7 +16,7 @@ class Products extends Component
 {
     use WithFileUploads;
 
-    public $name, $description, $price, $stock, $provider_id, $category_id;
+    public $name, $description, $price, $purchase_price, $stock, $provider_id, $category_id;
     public $img_url;
     public $productId;
     public $modal = false;
@@ -62,6 +62,7 @@ class Products extends Component
         $this->name = '';
         $this->description = '';
         $this->price = '';
+        $this->purchase_price = '';
         $this->stock = 0;
         $this->provider_id = '';
         $this->category_id = '';
@@ -107,6 +108,7 @@ class Products extends Component
         $this->name = $product->name;
         $this->description = $product->description;
         $this->price = $product->price;
+        $this->purchase_price = $product->purchase_price;
         $this->stock = $product->stock;
         $this->provider_id = $product->provider_id;
         $this->category_id = $product->category_id;
@@ -129,6 +131,7 @@ class Products extends Component
             'name' => $this->name,
             'description' => $this->description,
             'price' => $this->price,
+            'purchase_price' => $this->purchase_price,
             'stock' => $this->stock,
             'provider_id' => $this->provider_id,
             'category_id' => $this->category_id,

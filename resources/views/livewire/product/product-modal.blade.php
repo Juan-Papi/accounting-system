@@ -23,12 +23,18 @@
 
                     <!--precio y proveedor-->
                     <div class="mb-2 row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="price">Precio</label>
                             <input id="price" type="number" step="0.01"  wire:model="price" class="form-control" placeholder="Ingrese el precio">
                             @error('price') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label for="purchase_price">Precio compra</label>
+                            <input id="purchase_price" type="number" wire:model="purchase_price" class="form-control" placeholder="Ingrese el precio de compra">
+                            @error('purchase_price') <span class="text-danger">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="col-md-4">
                             <label for="stock">Stock</label>
                             <input id="stock" type="number" wire:model="stock" class="form-control" placeholder="Cantidad disponible">
                             @error('stock') <span class="text-danger">{{ $message }}</span> @enderror
