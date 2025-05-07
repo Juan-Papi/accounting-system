@@ -415,6 +415,13 @@ return [
                     //    'can' => 'Listar usuarios',
                 ],
                 [
+                    'text' => 'Pagos',
+                    'route'  => 'expenses.index',
+                    'icon'    => 'fas fa-fw fa-money-bill-wave',
+                    'active' => ['expenses*'],
+                    //    'can' => 'Listar usuarios',
+                ],
+                [
                     'text' => 'Libro Diario',
                     // 'route'  => '.index',
                     'icon'    => 'fas fa-fw fa-box',

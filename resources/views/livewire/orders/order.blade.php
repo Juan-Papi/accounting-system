@@ -20,6 +20,7 @@
                             <th>Proveedor</th>
                             <th>Estado</th>
                             <th>Fecha</th>
+                            <th>Saldo</th>
                             <th>Total</th>
                             <th>Productos</th>
                             <th>Acciones</th>
@@ -30,12 +31,19 @@
                             <tr class="text-center">
                                 <td class="align-middle">{{ $order->id }}</td>
                                 <td class="align-middle">{{ $order->provider->name }}</td>
-                                <td class="align-middle">{{ $order->status }}</td>
+                                <td class="align-middle">
+                                    @if ($order->status == 1)
+                                    <span class="badge badge-success">Pagado</span>                                        
+                                    @else
+                                    <span class="badge badge-warning">En deuda</span>
+                                    @endif
+                                </td>
                                 <td class="align-middle">{{ $order->created_at }}</td>
+                                <td class="align-middle">{{ number_format($order->balance, 2) }}</td>
                                 <td class="align-middle">{{ number_format($order->total_price, 2) }}</td>
                                 <td class="align-middle">
                                     @foreach ($order->products as $product)
-                                        {{ $product->name }},
+                                        {{ $product->name }}
                                     @endforeach
                                 </td>
                                 

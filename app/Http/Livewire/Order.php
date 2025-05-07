@@ -16,7 +16,7 @@ use App\Models\Provider;
 class Order extends Component
 {   
     use WithPagination;
-    public $quantity, $total_price, $status, $user_id, $provider_id, $product_id;
+    public $quantity, $total_price, $status, $user_id, $provider_id, $product_id, $balance;
     public $orderId;
     public $modal = false;
     public $providers;
@@ -131,6 +131,7 @@ class Order extends Component
             'status' => 0,
             'user_id' => Auth::user()->id,
             'provider_id' => $this->provider_id,
+            'balance'=> $this->total_price,
         ];
     }
 

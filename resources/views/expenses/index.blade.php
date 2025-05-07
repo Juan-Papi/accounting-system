@@ -1,13 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Pedidos')
+@section('title', 'Egresos')
 
 @section('content_header')
-    <h1>Lista de Pedidos</h1>
+    <h1>Pagar pedidos</h1>
 @stop
 
 @section('content')
-    @livewire('order')
+    @livewire('expenses')
 @stop
 
 @section('js')
@@ -15,20 +15,20 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
 
 <script>
-    Livewire.on('orderCreated', () => {
-        Swal.fire('¡Éxito!', 'Pedido creado correctamente.', 'success');
+    Livewire.on('orderPaymentCreated', () => {
+        Swal.fire('¡Éxito!', 'Pago registrado correctamente.', 'success');
     });
 
-    Livewire.on('ordertUpdated', () => {
-        Swal.fire('¡Éxito!', 'Pedido actualizado correctamente.', 'success');
+    Livewire.on('orderPaymentUpdated', () => {
+        Swal.fire('¡Éxito!', 'Egreso actualizado correctamente.', 'success');
     });
 
-    Livewire.on('orderDeleted', () => {
-        Swal.fire('¡Eliminado!', 'Pedido eliminado correctamente.', 'success');
+    Livewire.on('ExpenseDeleted', () => {
+        Swal.fire('¡Eliminado!', 'Egreso eliminado correctamente.', 'success');
     });
 
-    Livewire.on('orderDeleteError', () => {
-        Swal.fire('Error', 'No se pudo eliminar el Pedido.', 'error');
+    Livewire.on('ExpenseDeleteError', () => {
+        Swal.fire('Error', 'No se pudo eliminar el producto.', 'error');
     });
 
     Livewire.on('confirmDelete', productId => {

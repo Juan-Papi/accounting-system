@@ -27,6 +27,7 @@ class OrderRequest extends FormRequest
             'status' => 'nullable|integer',
             'user_id' => 'required|exists:users,id',
             'provider_id' => 'required|exists:providers,id',
+            'balance'=> 'nullable|numeric|min:0',
         ];
     }
 
@@ -44,6 +45,7 @@ class OrderRequest extends FormRequest
             'status.max' => 'El estado no puede tener más de 255 caracteres.',
             'provider_id.required' => 'El proveedor es obligatorio.',
             'provider_id.exists' => 'El proveedor seleccionado no existe.',
+            
         ];
     }
 }

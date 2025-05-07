@@ -14,7 +14,8 @@ class Order extends Model
         'total_price',
         'status',
         'user_id',
-        'provider_id'
+        'provider_id',
+        'balance'
     ];
 
 
@@ -31,4 +32,10 @@ class Order extends Model
                     ->withPivot('quantity', 'subtotal', 'total_price')
                     ->withTimestamps();
     }
+
+    public function payments(){
+        return $this->hasMany(OrderPayment::class);
+    }
+
+
 }

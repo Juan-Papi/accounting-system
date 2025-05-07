@@ -31,7 +31,7 @@ class AccoutingAccount extends Component
                 return $query->where('code', 'LIKE', '%' . $this->search . '%')
                     ->orWhere('name', 'LIKE', '%' . $this->search . '%');
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('id', 'ASC')
             ->paginate(6);
         return view('livewire.accounts.accouting-account',compact('accounts', 'parentAccounts'));
     }
