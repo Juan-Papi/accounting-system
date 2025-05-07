@@ -81,6 +81,7 @@ class BackupController extends Controller
             'frequency' => $enabled ? 'required|in:daily,weekly,monthly' : 'nullable|in:daily,weekly,monthly',
             'time' => $enabled ? 'required|date_format:H:i,H:i:s' : 'nullable|date_format:H:i,H:i:s',
         ];
+
         try {
             $request->validate($rules);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -102,6 +103,7 @@ class BackupController extends Controller
 
         // Obtener la configuración actual
         $config = BackupConfig::getSettings();
+        $config->time = substr($request->input('time', $config->time), 0, 5);
 
         // Actualizar los valores
         $config->enabled = $enabled;

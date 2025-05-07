@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
 {
 
     protected $commands = [
-       // DbBackupCommand::class,
+        // DbBackupCommand::class,
         \App\Console\Commands\DatabaseBackupCommand::class,
     ];
 
@@ -35,18 +35,19 @@ class Kernel extends ConsoleKernel
 
                 $command = $schedule->command('db:backup --frequency=' . $config->frequency);
 
+                $timeWithoutSeconds = substr($config->time, 0, 5);
                 // Programar según la frecuencia
                 switch ($config->frequency) {
                     case 'daily':
-                        $command->dailyAt($config->time);
-                        Log::info('Copia de seguridad diaria');
+                        $command->dailyAt($timeWithoutSeconds);
+                        Log::info('Copia de seguridad diaria', ['time' => $config->time]);
                         break;
                     case 'weekly':
-                        $command->weeklyOn(1, $config->time); // 1 = Lunes
+                        $command->weeklyOn(1, $timeWithoutSeconds); // 1 = Lunes
                         Log::info('Copia de seguridad semanal');
                         break;
                     case 'monthly':
-                        $command->monthlyOn(1, $config->time); // Día 1 de cada mes
+                        $command->monthlyOn(1, $timeWithoutSeconds); // Día 1 de cada mes
                         Log::info('Copia de seguridad mensual');
                         break;
                 }
@@ -63,7 +64,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
