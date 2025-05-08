@@ -8,7 +8,8 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $query = Product::query();
 
         if ($request->has('name')) {
@@ -77,6 +78,4 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(['message' => 'Producto eliminado'], 200);
     }
-
-    
 }
