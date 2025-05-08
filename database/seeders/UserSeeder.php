@@ -77,9 +77,9 @@ class UserSeeder extends Seeder
         )->assignRole('Admin');
 
         User::updateOrCreate(
-            [  'email' => 'pablojuan123sc@gmail.com'],
+            [  'email' => 'gerente@gmail.com'],
             [
-                'name' => 'Juan Pablo Rodriguez',
+                'name' => 'Jhon Doe',
                 'password' => bcrypt(12345678)
             ])->assignRole('Gerente');
 
