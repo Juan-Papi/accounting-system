@@ -34,6 +34,19 @@ class Product extends Model
                     ->withPivot('quantity', 'subtotal', 'total_price')
                     ->withTimestamps();
     }
+
+    public function saleItems(){
+        return $this->hasMany(SaleItem::class);
+    }
+
+     public function reduceStock($quantity){
+         if ($this->stock >= $quantity) {
+             $this->stock -= $quantity;
+             $this->save();
+         } else {
+             throw new \Exception('No hay suficiente stock para realizar la venta.');
+         }
+     }
  
     public function scopeFilterByName($query, $name){
         return $query->where('name', 'like', '%' . $name . '%');

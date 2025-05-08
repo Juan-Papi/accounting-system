@@ -14,12 +14,14 @@ use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\AccountingAccountController;
 use App\Http\Controllers\EgresoController;
+use App\Http\Controllers\SaleController;
 use App\Models\Plan;
 use App\Models\PlanSubscription as ModelPlanSubscription;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\BackupController;
 use App\Models\Order;
+use App\Models\Sale;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,3 +103,5 @@ Route::group(['prefix' => 'backup'], function () {
 Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
 Route::get('/accounts',[AccountingAccountController::class,'index'])->name('accounts.index');
 Route::get('/expenses',[EgresoController::class,'index'])->name('expenses.index');
+Route::get('/sales',[SaleController::class,'index'])->name('sales.index');
+Route::get('/payment',[SaleController::class,'payment'])->name('payment.index');

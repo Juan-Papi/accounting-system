@@ -414,61 +414,44 @@ return [
                     'active' => ['accounts*'],
                     //    'can' => 'Listar usuarios',
                 ],
+                // [
+                //     'text' => 'Pagos',
+                //     'route'  => 'expenses.index',
+                //     'icon'    => 'fas fa-fw fa-money-bill-wave',
+                //     'active' => ['expenses*'],
+                //     //    'can' => 'Listar usuarios',
+                // ],
                 [
-                    'text' => 'Pagos',
-                    'route'  => 'expenses.index',
-                    'icon'    => 'fas fa-fw fa-money-bill-wave',
-                    'active' => ['expenses*'],
+                    'text' => 'Ventas',
+                    'route'  => 'sales.index',
+                    'icon'    => 'fas fa-fw fa-shopping-cart',
+                    'active' => ['sales*'],
                     //    'can' => 'Listar usuarios',
                 ],
+
                 [
-                    'text' => 'Libro Diario',
-                    // 'route'  => '.index',
-                    'icon'    => 'fas fa-fw fa-box',
-                    // 'active' => ['accounts*'],
-                    //    'can' => 'Listar usuarios',
+                    'text'    => 'Pagos',
+                    'icon'    => 'fas fa-fw fa-money-bill-wave',
+                'submenu' => [
+                        [
+                            'text' => 'Pagos de pedidos',
+                            'route'  => 'expenses.index',
+                            'icon'    => 'fas fa-fw fa-shopping-cart',
+                            'active' => ['expenses*'],
+                            //    'can' => 'Listar usuarios',
+                        ],
+                        [
+                            'text' => 'Pagos de ventas',
+                            'route'  => 'payment.index',
+                            'icon'    => 'fas fa-fw fa-box-open',
+                            'active' => ['payment*'],
+                            //    'can' => 'Listar usuarios',
+                        ],
+                    ],
                 ],
             ],
         ],
 
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
         [
             'text' => 'Backup Config',
             'route'  => 'backups.index',
