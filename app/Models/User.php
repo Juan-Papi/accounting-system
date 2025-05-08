@@ -14,6 +14,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles; //extra
 use Laravel\Cashier\Billable; //ext2
+use App\Models\AccountingAccount;
 
 class User extends Authenticatable
 {
@@ -89,5 +90,9 @@ class User extends Authenticatable
 
     public function accountingAccounts(){
         return $this->hasMany(AccountingAccount::class);
+    }
+
+    public function sales(){
+        return $this->hasMany(Sale::class);
     }
 }
