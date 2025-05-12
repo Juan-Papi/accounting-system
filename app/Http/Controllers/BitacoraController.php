@@ -8,7 +8,7 @@ class BitacoraController extends Controller
 {
     public function __construct()
     {
-       $this->middleware('can:Listar bitacora')->only('index');
+       //$this->middleware('can:Listar bitacora')->only('index');
     }
     public function index()
     {
