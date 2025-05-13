@@ -1,14 +1,12 @@
 <x-app-layout>
-
-
-    <section class="bg-cover" style="background-image: url({{ asset('img/home/dumbbells-g5d16b69f7_1280.jpg') }})">
+    <section class="bg-cover" style="background-image: url({{ asset('images/accounting-systems/accounting-system.png') }})">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
 
-            <div class="w-full md:w-3/4 lg:w-1/2">
+            <div class="w-full md:w-3/4 lg:w-1/2 text-center">
                 <h1 class="text-black font-bold text-4xl">
-                    FOTOGRAFIAS CENTER
+                    SISTEMA CONTABLE
                 </h1>
-                <p class="text-white text-lg mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit
+                <p class="text-white text-lg mt-2 opacity-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit
                     numquam placeat et perspiciatis ipsum,
                     libero molestias ad, quia illo incidunt alias nihil temporibus. Laudantium, fugiat ea sapiente quis
                     blanditiis doloribus.</p>
@@ -19,14 +17,14 @@
 
     <section class="mt-24">
         <h1 class="text-gray-500 text-center text-3xl mb-6">
-            Nuestras fotos
+            Nuestro Sistema Contable
         </h1>
 
         <div
             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
             <article>
                 <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c1.jpg') }}"
+                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/accounting-systems/gestion-usuarios.png') }}"
                         alt="">
                 </figure>
                 <header class="mt-2">
@@ -40,7 +38,7 @@
             </article>
             <article>
                 <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c2.jpg') }}"
+                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/accounting-systems/gestion-inventario.png') }}"
                         alt="">
                 </figure>
                 <header class="mt-2">
@@ -54,7 +52,7 @@
             </article>
             <article>
                 <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c3.jpg') }}"
+                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/accounting-systems/contabilidad.png') }}"
                         alt="">
                 </figure>
                 <header class="mt-2">
@@ -68,67 +66,7 @@
             </article>
             <article>
                 <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c4.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-        </div>
-
-        <div
-            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8">
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c5.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c6.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c7.jpg') }}"
-                        alt="">
-                </figure>
-                <header class="mt-2">
-
-                    <h1 class="text-center text-xl text-gray-400">
-                        Lorem, ipsum.
-                    </h1>
-                    <p class="text-sm text-gray-300">Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                        Dignissimos, aspernatur?</p>
-                </header>
-            </article>
-            <article>
-                <figure>
-                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/areas/c8.jpg') }}"
+                    <img class="rounded-xl h-36 w-full object-cover" src="{{ asset('images/accounting-systems/backup.png') }}"
                         alt="">
                 </figure>
                 <header class="mt-2">
@@ -147,7 +85,7 @@
     @php
         $plans = \App\Models\Plan::all();
     @endphp
-    
+
 
     {{-- nueva section --}}
     <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
@@ -169,7 +107,7 @@
                                         <li class="text-gray-700">✔️{{$detail->description}}</li>
                                     @endforeach
                                 </ul>
-                                <button id="btn-suscription" 
+                                <button id="btn-suscription"
                                         class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition duration-300 ease-in-out transform hover:scale-105">
                                     Suscribirse
                                 </button>
