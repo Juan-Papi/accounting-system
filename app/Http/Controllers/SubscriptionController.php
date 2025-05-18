@@ -36,6 +36,7 @@ class SubscriptionController extends Controller
             "uso_unico" => true,
             "detalle" => "Suscripción con el plan: ".$detalle,
         ];
+        Log::debug('Data para generar QR: ' . json_encode($data));
         curl_setopt_array($curl, array(
             CURLOPT_URL => self::$ENDPOINT . '/generar-qr',
             CURLOPT_RETURNTRANSFER => true,
@@ -55,7 +56,7 @@ class SubscriptionController extends Controller
 
         $response = curl_exec($curl);
         curl_close($curl);
-        // Log::debug($response);
+        $response = json_decode($response, true);
         return json_decode($response, true);    
     }
 
@@ -69,6 +70,7 @@ class SubscriptionController extends Controller
             "secret_key" => self::$secretKey,
             "movimiento_id" => $movimiento_id,
         ];
+        Log::debug('Data para verificar QR: ' . json_encode($data));
         curl_setopt_array($curl, array(
             CURLOPT_URL => self::$ENDPOINT . '/verificar-estado-qr',
             CURLOPT_RETURNTRANSFER => true,

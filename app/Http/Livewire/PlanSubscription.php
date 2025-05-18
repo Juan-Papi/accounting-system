@@ -62,7 +62,7 @@ class PlanSubscription extends Component
                 $price = $this->selectedPlan->price;
                 
                 $qrResponse = SubscriptionController::generarQr($this->selectedPlan, $this->selectedPlan->name);
-                Log::info('Contenido de respuesta QR:', (array) $qrResponse);
+                 Log::debug('Contenido de respuesta QR:' . json_encode($qrResponse));
                 if ($qrResponse && isset($qrResponse['Codigo']) && $qrResponse['Codigo'] === 0) {
                     $base64 = $qrResponse['Data']['qr'] ?? null;
                     $this->motionId = $qrResponse['Data']['movimiento_id'] ?? 0;
