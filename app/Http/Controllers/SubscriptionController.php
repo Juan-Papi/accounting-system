@@ -61,13 +61,12 @@ class SubscriptionController extends Controller
     //     return json_decode($response, true);    
     // }
 
-    public static function generarQr($plan, $detalle)
+  public static function generarQr($plan, $detalle)
 {
     $monto = $plan->price;
     $curl = curl_init();
     $user = self::USERNAME;
     $pass = self::PASSWORD;
-
     $data = [
         "secret_key" => self::$secretKey,
         "monto" => $monto,
@@ -76,15 +75,13 @@ class SubscriptionController extends Controller
         "uso_unico" => true,
         "detalle" => "Suscripción con el plan: " . $detalle,
     ];
-
     Log::debug('Data para generar QR: ' . json_encode($data));
-
     curl_setopt_array($curl, array(
         CURLOPT_URL => self::$ENDPOINT . '/generar-qr',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30, // mejor usar timeout específico
+        CURLOPT_TIMEOUT => 30,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'POST',
@@ -94,10 +91,16 @@ class SubscriptionController extends Controller
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
         ),
+        
+        // Añade estas líneas para solucionar el problema de SSL
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
+        CURLOPT_CAINFO => '/etc/pki/tls/cert.pem',
+        
+        // Opcional: Para mayor verbosidad en caso de error
+        CURLOPT_VERBOSE => true,
     ));
-
     $response = curl_exec($curl);
-
     // Validar error cURL
     if (curl_errno($curl)) {
         $error_msg = curl_error($curl);
@@ -105,9 +108,7 @@ class SubscriptionController extends Controller
         curl_close($curl);
         return null;
     }
-
     curl_close($curl);
-
     // Validar JSON
     $responseDecoded = json_decode($response, true);
     if (json_last_error() !== JSON_ERROR_NONE) {
@@ -115,12 +116,9 @@ class SubscriptionController extends Controller
         Log::error('Contenido bruto recibido: ' . $response);
         return null;
     }
-
     Log::debug('generar Qr----Contenido de respuesta QR: ' . json_encode($responseDecoded));
-
     return $responseDecoded;
 }
-
 
     // public static function verificarQr($movimiento_id)
     // {
@@ -156,7 +154,7 @@ class SubscriptionController extends Controller
     //     return json_decode($response);
     // }
 
-    public static function verificarQr($movimiento_id)
+   public static function verificarQr($movimiento_id)
 {
     $curl = curl_init();
     $user = self::USERNAME;
@@ -184,6 +182,12 @@ class SubscriptionController extends Controller
         CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json',
         ),
+        // Añadir opciones para SSL, igual que en generarQr
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
+        CURLOPT_CAINFO => '/etc/pki/tls/cert.pem',
+        // Opcional: para mayor verbosidad en caso de error
+        CURLOPT_VERBOSE => true,
     ));
 
     $response = curl_exec($curl);
@@ -209,6 +213,7 @@ class SubscriptionController extends Controller
 
     return $responseDecoded;
 }
+
 
     public static function solicitarPago($monto, $tipo, $numeroSoli, $carnet, $complemento, $extension, $fechaExpiracion)
     {
