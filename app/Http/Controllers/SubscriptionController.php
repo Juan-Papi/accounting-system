@@ -20,80 +20,195 @@ class SubscriptionController extends Controller
     private static $ENDPOINT = "https://veripagos.com/api/bcp";
 
    
-    public static function generarQr($plan,$detalle)
-    {   
-        $monto = $plan->price;
-        $curl = curl_init();
-        $user = self::USERNAME;
-        $pass = self::PASSWORD;
+    // public static function generarQr($plan,$detalle)
+    // {   
+    //     $monto = $plan->price;
+    //     $curl = curl_init();
+    //     $user = self::USERNAME;
+    //     $pass = self::PASSWORD;
 
-        $data = [
-            "secret_key" => self::$secretKey,
-            "monto" => $monto,
-            "detalle" => "Inscripcion",
-            "data" => [],
-            "vigencia" => "30/23:30",
-            "uso_unico" => true,
-            "detalle" => "Suscripción con el plan: ".$detalle,
-        ];
-        Log::debug('Data para generar QR: ' . json_encode($data));
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => self::$ENDPOINT . '/generar-qr',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "$user:$pass",
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-            ),
-        ));
+    //     $data = [
+    //         "secret_key" => self::$secretKey,
+    //         "monto" => $monto,
+    //         "detalle" => "Inscripcion",
+    //         "data" => [],
+    //         "vigencia" => "30/23:30",
+    //         "uso_unico" => true,
+    //         "detalle" => "Suscripción con el plan: ".$detalle,
+    //     ];
+    //     Log::debug('Data para generar QR: ' . json_encode($data));
+    //     curl_setopt_array($curl, array(
+    //         CURLOPT_URL => self::$ENDPOINT . '/generar-qr',
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_ENCODING => '',
+    //         CURLOPT_MAXREDIRS => 10,
+    //         CURLOPT_TIMEOUT => 0,
+    //         CURLOPT_FOLLOWLOCATION => true,
+    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //         CURLOPT_CUSTOMREQUEST => 'POST',
+    //         CURLOPT_POSTFIELDS => json_encode($data),
+    //         CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+    //         CURLOPT_USERPWD => "$user:$pass",
+    //         CURLOPT_HTTPHEADER => array(
+    //             'Content-Type: application/json',
+    //         ),
+    //     ));
 
-        $response = curl_exec($curl);
+    //     $response = curl_exec($curl);
+    //     curl_close($curl);
+    //     $response = json_decode($response, true);
+    //     Log::debug('generar Qr----Contenido de respuesta QR: ' . json_encode($response));
+    //     return json_decode($response, true);    
+    // }
+
+    public static function generarQr($plan, $detalle)
+{
+    $monto = $plan->price;
+    $curl = curl_init();
+    $user = self::USERNAME;
+    $pass = self::PASSWORD;
+
+    $data = [
+        "secret_key" => self::$secretKey,
+        "monto" => $monto,
+        "data" => [],
+        "vigencia" => "30/23:30",
+        "uso_unico" => true,
+        "detalle" => "Suscripción con el plan: " . $detalle,
+    ];
+
+    Log::debug('Data para generar QR: ' . json_encode($data));
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => self::$ENDPOINT . '/generar-qr',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30, // mejor usar timeout específico
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($data),
+        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+        CURLOPT_USERPWD => "$user:$pass",
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    // Validar error cURL
+    if (curl_errno($curl)) {
+        $error_msg = curl_error($curl);
+        Log::error('Error cURL al generar QR: ' . $error_msg);
         curl_close($curl);
-        $response = json_decode($response, true);
-        Log::debug('generar Qr----Contenido de respuesta QR: ' . json_encode($response));
-        return json_decode($response, true);    
+        return null;
     }
+
+    curl_close($curl);
+
+    // Validar JSON
+    $responseDecoded = json_decode($response, true);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        Log::error('Error al decodificar JSON de respuesta QR: ' . json_last_error_msg());
+        Log::error('Contenido bruto recibido: ' . $response);
+        return null;
+    }
+
+    Log::debug('generar Qr----Contenido de respuesta QR: ' . json_encode($responseDecoded));
+
+    return $responseDecoded;
+}
+
+
+    // public static function verificarQr($movimiento_id)
+    // {
+    //     $curl = curl_init();
+    //     $user = self::USERNAME;
+    //     $pass = self::PASSWORD;
+
+    //     $data = [
+    //         "secret_key" => self::$secretKey,
+    //         "movimiento_id" => $movimiento_id,
+    //     ];
+    //     Log::debug('Data para verificar QR: ' . json_encode($data));
+    //     curl_setopt_array($curl, array(
+    //         CURLOPT_URL => self::$ENDPOINT . '/verificar-estado-qr',
+    //         CURLOPT_RETURNTRANSFER => true,
+    //         CURLOPT_ENCODING => '',
+    //         CURLOPT_MAXREDIRS => 10,
+    //         CURLOPT_TIMEOUT => 0,
+    //         CURLOPT_FOLLOWLOCATION => true,
+    //         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    //         CURLOPT_CUSTOMREQUEST => 'POST',
+    //         CURLOPT_POSTFIELDS => json_encode($data),
+    //         CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+    //         CURLOPT_USERPWD => "$user:$pass",
+    //         CURLOPT_HTTPHEADER => array(
+    //             'Content-Type: application/json',
+    //         ),
+    //     ));
+
+    //     $response = curl_exec($curl);
+    //     curl_close($curl);
+    //     Log::debug('verificarQr----Contenido de respuesta QR: ' . json_encode($response));
+    //     return json_decode($response);
+    // }
 
     public static function verificarQr($movimiento_id)
-    {
-        $curl = curl_init();
-        $user = self::USERNAME;
-        $pass = self::PASSWORD;
+{
+    $curl = curl_init();
+    $user = self::USERNAME;
+    $pass = self::PASSWORD;
 
-        $data = [
-            "secret_key" => self::$secretKey,
-            "movimiento_id" => $movimiento_id,
-        ];
-        Log::debug('Data para verificar QR: ' . json_encode($data));
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => self::$ENDPOINT . '/verificar-estado-qr',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
-            CURLOPT_USERPWD => "$user:$pass",
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json',
-            ),
-        ));
+    $data = [
+        "secret_key" => self::$secretKey,
+        "movimiento_id" => $movimiento_id,
+    ];
 
-        $response = curl_exec($curl);
+    Log::debug('Data para verificar QR: ' . json_encode($data));
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => self::$ENDPOINT . '/verificar-estado-qr',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30, // Tiempo de espera razonable
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($data),
+        CURLOPT_HTTPAUTH => CURLAUTH_BASIC,
+        CURLOPT_USERPWD => "$user:$pass",
+        CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json',
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    if (curl_errno($curl)) {
+        $error_msg = curl_error($curl);
+        Log::error('Error cURL al verificar QR: ' . $error_msg);
         curl_close($curl);
-        Log::debug('verificarQr----Contenido de respuesta QR: ' . json_encode($response));
-        return json_decode($response);
+        return null;
     }
+
+    curl_close($curl);
+
+    $responseDecoded = json_decode($response, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        Log::error('Error al decodificar JSON de respuesta de verificación QR: ' . json_last_error_msg());
+        Log::error('Contenido bruto recibido: ' . $response);
+        return null;
+    }
+
+    Log::debug('verificarQr----Contenido de respuesta QR: ' . json_encode($responseDecoded));
+
+    return $responseDecoded;
+}
 
     public static function solicitarPago($monto, $tipo, $numeroSoli, $carnet, $complemento, $extension, $fechaExpiracion)
     {
