@@ -91,6 +91,7 @@ class SubscriptionController extends Controller
 
         $response = curl_exec($curl);
         curl_close($curl);
+        Log::debug('verificarQr----Contenido de respuesta QR: ' . json_encode($response));
         return json_decode($response);
     }
 
