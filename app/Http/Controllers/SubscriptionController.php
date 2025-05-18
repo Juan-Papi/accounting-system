@@ -55,7 +55,7 @@ class SubscriptionController extends Controller
 
         $response = curl_exec($curl);
         curl_close($curl);
-        Log::debug($response);
+        // Log::debug($response);
         return json_decode($response, true);    
     }
 
@@ -184,6 +184,9 @@ class SubscriptionController extends Controller
 
             for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
                 $response = self::verificarQr($moveId);
+
+                Log::debug('Intento ' . $attempt . ': ' . json_encode($response));
+                Log::info('Contenido de respuesta QR:', (array) $response->Data);
 
                 if ($response && isset($response->Codigo) && $response->Codigo === 0) {
                     $status = strtolower($response->Data->estado);

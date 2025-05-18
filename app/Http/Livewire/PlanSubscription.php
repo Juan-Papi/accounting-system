@@ -62,22 +62,19 @@ class PlanSubscription extends Component
                 $price = $this->selectedPlan->price;
                 
                 $qrResponse = SubscriptionController::generarQr($this->selectedPlan, $this->selectedPlan->name);
-    
+                Log::info('Contenido de respuesta QR:', (array) $qrResponse);
                 if ($qrResponse && isset($qrResponse['Codigo']) && $qrResponse['Codigo'] === 0) {
                     $base64 = $qrResponse['Data']['qr'] ?? null;
                     $this->motionId = $qrResponse['Data']['movimiento_id'] ?? 0;
-    
-                    if ($base64) {
+                    Log::info('Entre a al if:' . $this->motionId);
+                     if ($base64){
                         $this->qrImageBase64 = 'data:image/png;base64,' . $base64;
-                        Qr::updateOrCreate(
-                            ['plan_id' => $planId],
-                            [
-                                'price' => $price, 
-                                'qr_base64' => $base64, 
-                                'status' => true,
-                                'motion_id' => $this->motionId
-                            ]
-                        );
+
+                        if(base64_decode($base64, true) === false){
+                            Log::warning("QR recibido no es base64 válido.");
+                            $this->emit('error', 'Error al decodificar la imagen QR.');
+                            return;
+                        }
                     } else {
                         $this->emit('error', 'QR vacío en la respuesta del servidor.');
                     }
