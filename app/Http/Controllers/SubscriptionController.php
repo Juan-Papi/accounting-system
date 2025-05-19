@@ -310,7 +310,7 @@ class SubscriptionController extends Controller
                 $response = self::verificarQr($moveId);
 
                 Log::debug('Intento ' . $attempt . ': ' . json_encode($response));
-                Log::info('Contenido de respuesta QR:', (array) $response->Data);
+                // Log::info('Contenido de respuesta QR:', (array) $response->Data);
 
                 if ($response && isset($response->Codigo) && $response->Codigo === 0) {
                     $status = strtolower($response->Data->estado);
