@@ -1,3 +1,4 @@
+
 <div class=" bg-white shadow-lg rounded-lg ">
 
     {{-- Modal para mostrar QR del plan seleccionado --}}
@@ -24,9 +25,9 @@
                                             <li class="text-green-500">✔️ {{$detail->description}}</li>
                                         @endforeach
                                     </ul>
-                                    <button wire:click="openModal({{ $plan->id }})"
-                                            class="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition"
-                                            @if($buttonDisabledSubscribe) disabled @endif>
+                                    <button wire:click="openModal({{ $plan->id }})" 
+                                            class="mt-4 w-full text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition"
+                                            style="background: blue">
                                         Suscribirse
                                     </button>
                                 </div>
@@ -55,19 +56,19 @@
     </div>
 
     {{-- Spinner de carga para generar QR --}}
-    <div id="loadingOverlay" class="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center hidden">
-        <div class="text-center">
-            <div class="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-            <p class="mt-2 text-blue-700 font-semibold">Generando Qr...</p>
-        </div>
+  <div id="loadingOverlay" style="position: fixed; inset: 0; background-color: rgba(255, 255, 255, 0.8); display: none; align-items: center; justify-content: center;">
+    <div style="text-align: center;">
+        <div style="animation: spin 1s linear infinite; height: 3rem; width: 3rem; border-width: 4px; border-style: solid; border-color: #3b82f6 transparent transparent transparent; border-radius: 9999px;"></div>
+        <p style="margin-top: 0.5rem; color: #1d4ed8; font-weight: 600;">Generando Qr...</p>
     </div>
+</div>
 
     {{-- Spinner de carga para verificar pago --}}
-    <div id="loadingVerifyPay" class="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center hidden">
-        <div class="text-center">
-            <div class="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-            <p class="mt-2 text-blue-700 font-semibold">Comprobando pago...</p>
-        </div>
+   <div id="loadingVerifyPay" style="position: fixed; inset: 0; background-color: rgba(255, 255, 255, 0.8); display: none; align-items: center; justify-content: center;">
+    <div style="text-align: center;">
+        <div style="animation: spin 1s linear infinite; height: 3rem; width: 3rem; border-width: 4px; border-style: solid; border-color: #3b82f6 transparent transparent transparent; border-radius: 9999px;"></div>
+        <p style="margin-top: 0.5rem; color: #1d4ed8; font-weight: 600;">Comprobando pago...</p>
     </div>
+</div>
 
 </div>

@@ -1,3 +1,12 @@
+
+<style>
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
+
 <x-app-layout>
     <section class="bg-cover" style="background-image: url({{ asset('images/accounting-systems/accounting-system.png') }})">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">

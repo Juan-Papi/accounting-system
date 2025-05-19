@@ -30,7 +30,7 @@
                     @if($qrImageBase64)
                         <div class="text-center my-3 hidden" id="qrImageContainer">
                             {{-- <img src="{{ $qrImageBase64 }}" class="rounded shadow-md max-w-xs mx-auto" alt="QR generado"> --}}
-                            <img src="{{ $qrImageBase64 }}" class="rounded shadow-md max-w-[250px] mx-auto" alt="QR generado">
+                            <img src="{{ $qrImageBase64 }}" class="rounded shadow-md max-w-[250px] mx-auto" style="max-width: 250px;" alt="QR generado">
                         </div>
                     @endif
                 </div><br>
@@ -55,7 +55,8 @@
 
             @if($qrImageBase64)
                 <button wire:click="verifyQrPayment('{{ $motionId }}', '{{ $selectedPlan->id }}')"
-                        class="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition">
+                        class=" text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
+                        style="background: green">
                     Confirmar Suscripción
                 </button>
             @endif
