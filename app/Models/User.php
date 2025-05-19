@@ -85,7 +85,7 @@ class User extends Authenticatable
     }
 
     public function planSubscriptions(){
-        return $this->hasMany(PlanSubscription::class);
+        return $this->hasMany(PlanSubscription::class)->orderBy('created_at', 'desc');
     }
 
     public function accountingAccounts(){

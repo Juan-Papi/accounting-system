@@ -1,23 +1,11 @@
-@extends('adminlte::page')
+@extends('layouts.app1')
 
-@section('title', 'Dashboard')
-
-@section('content_header')
-    <h1>Dashboard</h1>
-@stop
+@section('title', 'Landing Page')
 
 @section('content')
-    @if (Auth::user()->roles->count() > 0)
-        <ul>
-            @foreach (Auth::user()->roles as $role)
-                <li>{{ $role->name }}</li>
-            @endforeach
-        </ul>
-    @else
-        <p>No se han asignado roles al usuario.</p>
-    @endif
 
-    {{-- @livewire('plan-subscription') --}}
+
+    @livewire('plan-subscription')
   
 @stop
 

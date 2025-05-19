@@ -84,53 +84,64 @@
 
     @php
         $plans = \App\Models\Plan::all();
+        $user = auth()->user();
     @endphp
-
-
+    
     {{-- nueva section --}}
+    
+    @if (!$user)
     <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
-        <div class="row justify-content-center text-black">
-            @if ($plans->count() > 0)
-                @foreach ($plans as $plan)
-                    <div class="col-12 col-md-6 col-lg-4 mb-8">
-                        <div class="card border-t-4 border-blue-500 h-full shadow-lg bg-white rounded-lg">
-                            <div class="card-body p-6">
-                                <h5 class="card-title text-xl font-semibold text-center text-gray-900">
-                                    Plan <strong>{{$plan->name}}</strong>
-                                </h5>
-                                <p class="text-center text-gray-500">Ideal para usuarios individuales.</p>
-                                <p class="text-2xl font-bold text-center text-blue-600">
-                                    Bs. {{$plan->price}}<span class="text-sm text-gray-500">/mes</span>
-                                </p>
-                                <ul class="list-unstyled mb-4 text-center">
-                                    @foreach ($plan->detailPlans as $detail)
-                                        <li class="text-gray-700">✔️{{$detail->description}}</li>
-                                    @endforeach
-                                </ul>
-                                <button id="btn-suscription"
-                                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition duration-300 ease-in-out transform hover:scale-105">
-                                    Suscribirse
-                                </button>
+                <div class="row justify-content-center text-black">
+                    @if ($plans->count() > 0)
+                        @foreach ($plans as $plan)
+                            <div class="col-12 col-md-6 col-lg-4 mb-8">
+                                <div class="card border-t-4 border-blue-500 h-full shadow-lg bg-white rounded-lg">
+                                    <div class="card-body p-6">
+                                        <h5 class="card-title text-xl font-semibold text-center text-gray-900">
+                                            Plan <strong>{{$plan->name}}</strong>
+                                        </h5>
+                                        <p class="text-center text-gray-500">Ideal para usuarios individuales.</p>
+                                        <p class="text-2xl font-bold text-center text-blue-600">
+                                            Bs. {{$plan->price}}<span class="text-sm text-gray-500">/mes</span>
+                                        </p>
+                                        <ul class="list-unstyled mb-4 text-center">
+                                            @foreach ($plan->detailPlans as $detail)
+                                                <li class="text-gray-700">✔️{{$detail->description}}</li>
+                                            @endforeach
+                                        </ul>
+                                        <button id="btn-suscription"
+                                                class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl transition duration-300 ease-in-out transform hover:scale-105">
+                                            Suscribirse
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="col">
+                            <div class="alert alert-warning text-center" role="alert">
+                                No hay planes disponibles en este momento.
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endif
+                </div>  
+            </section>
             @else
-                <div class="col">
-                    <div class="alert alert-warning text-center" role="alert">
-                        No hay planes disponibles en este momento.
-                    </div>
+                <div class="mx-auto max-w-2xl py-10 mt-8">
+                    @livewire('subsc')
                 </div>
             @endif
-        </div>
-        <footer class="bg-white dark:bg-gray-900">
+            
+      
+  <footer class="bg-white dark:bg-gray-900">
             <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
                 <div class="md:flex md:justify-between">
                     <div class="mb-6 md:mb-0">
                         <a href="https://flowbite.com/" class="flex items-center">
                             <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3"
                                 alt="FlowBite Logo" />
-                            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Fotografias Center</span>
+                            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Sistema </span> <br>
+                            <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"> Contable</span>
                         </a>
                     </div>
                     <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
@@ -226,13 +237,14 @@
                 </div>
             </div>
         </footer>
-    </section>
+   
 
 
 </x-app-layout>
 <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('btn-suscription').addEventListener('click', function () {
+    let btnSuscription = document.getElementById('btn-suscription');
+    if (btnSuscription) {
+        btnSuscription.addEventListener('click', function () {
             Swal.fire({
                 title: '¿Deseas registrarte?',
                 text: 'Para adquirir este plan debes estar registrado.',
@@ -247,5 +259,88 @@
                 }
             });
         });
+    }
+    //   document.addEventListener('DOMContentLoaded', function () {
+    //     document.getElementById('btn-suscription').addEventListener('click', function () {
+    //         Swal.fire({
+    //             title: '¿Deseas registrarte?',
+    //             text: 'Para adquirir este plan debes estar registrado.',
+    //             icon: 'question',
+    //             showCancelButton: true,
+    //             confirmButtonText: 'Sí, Registrarme',
+    //             cancelButtonText: 'No, en otra ocasión'
+    //         }).then((result) => {
+    //             if (result.isConfirmed) {
+    //                 // Reemplaza "/registro" por la ruta que desees
+    //                 window.location.href = "{{ route('register') }}";
+    //             }
+    //         });
+    //     });
+    // });
+
+
+      Livewire.on('errorQr', () => {
+        Swal.fire('Error', 'Error al generar Qr. Inténtelo más tarde', 'error');
+    });
+
+
+        Livewire.on('paymentVerified', () => {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Suscripción confirmada!',
+                text: 'Tu pago fue validado exitosamente.',
+                timer: 4000, 
+                showConfirmButton: false,
+                willClose: () => {
+                    window.location.href = "{{ route('dashboard') }}"; 
+                }
+            });
+        });
+
+
+
+    Livewire.on('paymentFailed', (message) => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en la suscripción',
+            text: message,
+        });
+    });
+    Livewire.on('paymentPending', (message) => {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Pago no verificado',
+            text: 'Pago pendiente. Por favor, realiza el pago.',
+        });
+    });
+
+   Livewire.on('loading', () => {
+        console.log("Evento 'loading' recibido");
+        document.getElementById('loadingOverlay').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            document.getElementById('qrImageContainer').style.display = 'block';
+            
+        }, 5000); 
+    });
+
+    
+   Livewire.on('loadingVerifyPay', () => {
+        console.log("Evento 'loadingVerifyPay' recibido");
+        const element = document.getElementById('loadingVerifyPay');
+        if (element) {
+            element.style.display = 'flex';
+        } else {
+            console.error('Elemento no encontrado');
+        }
+        setTimeout(() => {
+            element.style.display = 'none';
+        }, 7000); 
+    });
+
+
+
+    Livewire.on('error', function (error) {
+        console.error(error);
     });
 </script>

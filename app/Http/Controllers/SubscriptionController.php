@@ -93,21 +93,21 @@ class SubscriptionController extends Controller
         ),
         
         // Añade estas líneas para solucionar el problema de SSL
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_SSL_VERIFYHOST => 2,
-        CURLOPT_CAINFO => '/etc/pki/tls/cert.pem',
+        // CURLOPT_SSL_VERIFYPEER => true,
+        // CURLOPT_SSL_VERIFYHOST => 2,
+        // CURLOPT_CAINFO => '/etc/pki/tls/cert.pem',
         
         // Opcional: Para mayor verbosidad en caso de error
         CURLOPT_VERBOSE => true,
     ));
     $response = curl_exec($curl);
     // Validar error cURL
-    if (curl_errno($curl)) {
-        $error_msg = curl_error($curl);
-        Log::error('Error cURL al generar QR: ' . $error_msg);
-        curl_close($curl);
-        return null;
-    }
+    // if (curl_errno($curl)) {
+    //     $error_msg = curl_error($curl);
+    //     Log::error('Error cURL al generar QR: ' . $error_msg);
+    //     curl_close($curl);
+    //     return null;
+    // }
     curl_close($curl);
     // Validar JSON
     $responseDecoded = json_decode($response, true);

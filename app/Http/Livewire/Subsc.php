@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Livewire;
+
+use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\SubscriptionController;
@@ -10,10 +12,8 @@ use App\Models\PlanSubscription as ModelPlanSubscription;
 use App\Models\Qr;
 use App\Models\User;
 
-use Livewire\Component;
-
-class PlanSubscription extends Component
-{   
+class Subsc extends Component
+{
     public $planSubscription = null;
     public $selectedPlan;
     public $qrImageBase64 = null;
@@ -42,7 +42,7 @@ class PlanSubscription extends Component
         //     ->where('end_time', '>', now())
         //     ->first();
         $plans = Plan::all();
-        return view('livewire.subscription.plan-subscription', [
+        return view('livewire.subscription.subsc', [
             'activeSubscription' => $activeSubscription,
             'plans' => $plans,
         ]);
@@ -73,6 +73,7 @@ class PlanSubscription extends Component
                 if ($qrResponse && isset($qrResponse['Codigo']) && $qrResponse['Codigo'] === 0) {
                     $base64 = $qrResponse['Data']['qr'] ?? null;
                     $this->motionId = $qrResponse['Data']['movimiento_id'] ?? 0;
+                    Log::info('Entre a al if:' . $this->motionId);
                      if ($base64){
                         $this->qrImageBase64 = 'data:image/png;base64,' . $base64;
 
@@ -118,8 +119,7 @@ class PlanSubscription extends Component
                 $this->emit('paymentFailed', $result['error'] ?? 'Error desconocido');
             }
         }
-        $this->closeModal();
+         $this->closeModal();
 
     }
-       
 }

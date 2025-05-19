@@ -124,11 +124,21 @@
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
 
-                                @can('Ver dashboard')
-                                    <x-dropdown-link href="{{ route('dashboard') }}">
+                                {{-- @can('Ver dashboard') --}}
+                                @php
+                                    $user = Auth::user();
+                                    $planSubscription = $user->planSubscriptions()->first();
+
+                                    
+                                @endphp
+                                @if ($planSubscription)
+                                      <x-dropdown-link href="{{ route('dashboard') }}">
                                         Dashboard
-                                    </x-dropdown-link>
-                                @endcan
+                                        </x-dropdown-link>
+                                    
+                                @endif
+                                  
+                                {{-- @endcan --}}
 
                                 {{-- <x-dropdown-link href="{{ route('billings.index') }}">
                                     Métodos de pago
@@ -219,11 +229,17 @@
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
 
-                    @can('Ver dashboard')
-                        <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                            Dashboard
-                        </x-responsive-nav-link>
-                    @endcan
+                        @can('Ver dashboard')
+                            @php
+                                $user = Auth::user();
+                                $planSubscription = $user->planSubscriptions()->first();
+                            @endphp
+                            @if ($planSubscription)
+                                <x-dropdown-link href="{{ route('dashboard') }}">
+                                    Dashboard
+                                </x-dropdown-link>
+                            @endif             
+                        @endcan
 
                     @auth
                         {{-- <x-responsive-nav-link href="{{ route('billings.index') }}" :active="request()->routeIs('billings.index')">
