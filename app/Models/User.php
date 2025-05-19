@@ -35,6 +35,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'parent_id',
     ];
 
     /**
@@ -95,4 +96,17 @@ class User extends Authenticatable
     public function sales(){
         return $this->hasMany(Sale::class);
     }
+
+     // Un usuario pertenece a un gerente (parent)
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    // Un usuario puede tener varios empleados bajo su supervisión
+    public function employees()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
+
 }

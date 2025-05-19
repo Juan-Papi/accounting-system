@@ -3,9 +3,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-36">
 
             <div class="w-full md:w-3/4 lg:w-1/2 text-center">
-                <h1 class="text-black font-bold text-4xl">
-                    SISTEMA CONTABLE
-                </h1>
+         
                 <p class="text-white text-lg mt-2 opacity-0">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit
                     numquam placeat et perspiciatis ipsum,
                     libero molestias ad, quia illo incidunt alias nihil temporibus. Laudantium, fugiat ea sapiente quis
@@ -15,7 +13,7 @@
         </div>
     </section>
 
-    <section class="mt-24">
+    <section class="mt-12">
         <h1 class="text-gray-500 text-center text-3xl mb-6">
             Nuestro Sistema Contable
         </h1>
@@ -90,7 +88,10 @@
     {{-- nueva section --}}
     
     @if (!$user)
-    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 mt-8">
+      <h1 class="text-gray-500 text-center text-3xl mt-10">
+            Nuestros Planes
+        </h1>
+    <section class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-gray-200 py-10 ">
                 <div class="row justify-content-center text-black">
                     @if ($plans->count() > 0)
                         @foreach ($plans as $plan)
@@ -100,7 +101,7 @@
                                         <h5 class="card-title text-xl font-semibold text-center text-gray-900">
                                             Plan <strong>{{$plan->name}}</strong>
                                         </h5>
-                                        <p class="text-center text-gray-500">Ideal para usuarios individuales.</p>
+                                        <p class="text-center text-gray-500">Ideal para ti.</p>
                                         <p class="text-2xl font-bold text-center text-blue-600">
                                             Bs. {{$plan->price}}<span class="text-sm text-gray-500">/mes</span>
                                         </p>
@@ -127,9 +128,13 @@
                 </div>  
             </section>
             @else
+                @if (!Auth::user()->hasRole('Admin'))
                 <div class="mx-auto max-w-2xl py-10 mt-8">
                     @livewire('subsc')
                 </div>
+                    
+                @endif
+             
             @endif
             
       

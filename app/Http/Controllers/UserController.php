@@ -30,12 +30,15 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
+            'parent_id' => ['nullable'],
             // Agrega aquí todas las validaciones necesarias para los otros campos
         ]);
 
         $data['password'] = bcrypt($data['password']);
-
-        User::create($data);
+        $manager = auth()->user()->id;
+        $data['parent_id'] = $manager;
+        $user= User::create($data);
+        $user->assignRole('Ejecutivo de ventas');
 
         $bitacora = new Bitacora();
         $bitacora->accion = '+++CREAR USUARIO';
