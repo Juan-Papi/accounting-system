@@ -131,7 +131,7 @@
 
                                     
                                 @endphp
-                                @if ($planSubscription|| Auth::user()->hasRole('Admin'))
+                                @if ($planSubscription|| Auth::user()->hasRole('Admin') || Auth::user()->hasRole('Ejecutivo de ventas'))
                                       <x-dropdown-link href="{{ route('dashboard') }}">
                                         Dashboard
                                         </x-dropdown-link>

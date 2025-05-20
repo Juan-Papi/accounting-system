@@ -11,6 +11,11 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\JournalEntry;
+use App\Models\JournalEntryDetail;
+use App\Models\AccountingAccount;
 
 class Sales extends Component
 {
@@ -121,6 +126,7 @@ class Sales extends Component
 
             } else {
            
+            DB::beginTransaction();
             $sale = Sale::create($validatedData);
 
             foreach ($this->selectedProducts as $item) {
@@ -132,6 +138,10 @@ class Sales extends Component
                     'total' => $item['subtotal'],
                 ]);
             }
+
+            // Registrar asiento contable de la venta
+            $this->registrarAsientoVenta($sale);
+              DB::commit();
 
             $this->emit('SaleCreated');
         }
@@ -194,5 +204,41 @@ class Sales extends Component
             'name_customer' => $this->name_customer,
             'phone_customer' => $this->phone_customer,
         ];
+    }
+
+    private function registrarAsientoVenta(Sale $sale) {
+        // Busca las cuentas contables necesarias (ajusta los códigos a tu plan contable)
+        $cuentaCxC = AccountingAccount::where('code', '1.1.03')->first(); // Cuentas por cobrar
+        $cuentaVentas = AccountingAccount::where('code', '4.1.01')->first(); // Cuenta de ventas (ingresos)
+
+        if (!$cuentaCxC || !$cuentaVentas) {
+            throw new \Exception('No se encontraron las cuentas contables requeridas para el asiento de venta.');
+        }
+
+        // Crear asiento contable
+        $journal = JournalEntry::create([
+            'date' => now(),
+            'description' => 'Registro de venta #' . $sale->id,
+            'reference' => $sale->id,
+            'user_id' => Auth::id(),
+        ]);
+
+        // Débito: cuentas por cobrar (cliente debe pagar)
+        JournalEntryDetail::create([
+            'journal_entry_id' => $journal->id,
+            'accounting_account_id' => $cuentaCxC->id,
+            'debit' => $sale->total_amount,
+            'credit' => 0,
+            'description' => 'Cliente debe pagar',
+        ]);
+
+        // Crédito: ventas (ingresos)
+        JournalEntryDetail::create([
+            'journal_entry_id' => $journal->id,
+            'accounting_account_id' => $cuentaVentas->id,
+            'debit' => 0,
+            'credit' => $sale->total_amount,
+            'description' => 'Ingreso por venta',
+        ]);
     }
 }

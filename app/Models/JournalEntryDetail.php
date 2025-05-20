@@ -12,7 +12,7 @@ class JournalEntryDetail extends Model
 
     protected $fillable = [
         'journal_entry_id', // Relación con el asiento contable principal
-        'account_id', // Relación con la cuenta contable
+        'accounting_account_id', // Relación con la cuenta contable
         'debit', // Monto de debe
         'credit', // Monto de haber
         'description', // Descripción de la transacción

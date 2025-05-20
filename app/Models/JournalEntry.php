@@ -22,8 +22,8 @@ class JournalEntry extends Model
         return $this->belongsTo(User::class);
     }
 
-    // public function details()
-    // {
-    //     return $this->hasMany(JournalEntryDetail::class);
-    // }
+    public function details()
+    {
+        return $this->hasMany(JournalEntryDetail::class);
+    }
 }

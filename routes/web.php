@@ -46,10 +46,10 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
        $user = Auth::user();
-        $planSubscription = $user->planSubscriptions()->first();
-        if(!$planSubscription){
-            return redirect()->route('home');
-        }  
+        // $planSubscription = $user->planSubscriptions()->first();
+        // if(!$planSubscription){
+        //     return redirect()->route('home');
+        // }  
 
         $activeSubscription = ModelPlanSubscription::where('user_id', Auth::user()->id)
         ->where('status', 'active')

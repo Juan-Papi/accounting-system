@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\Sale;
 use App\Models\Payment as PaymentModel;
+use App\Models\JournalEntry;
+use App\Models\JournalEntryDetail;
+use App\Models\AccountingAccount;
+use Illuminate\Support\Facades\DB;
 
 
 class Payment extends Component
@@ -83,7 +87,7 @@ class Payment extends Component
 
             if ($pay->amount == $sale->total_amount) {
                 $sale->update([
-                    'payment_status' => 'completado'
+                    'payment_status' => 'pagado'
                 ]);
             }else{
                 if($pay->amount < $sale->total_amount){
@@ -92,6 +96,9 @@ class Payment extends Component
                     ]);
                 }
             }
+
+            $this->registrarAsientoContable($pay);
+
 
             $this->emit('paymentCreated');
             $this->closeModal();
@@ -118,6 +125,49 @@ class Payment extends Component
             'payment_date' => $this->payment_date,
             'method' => $this->method,
         ];
+    }
+
+    public function registrarAsientoContable($pay){
+        DB::beginTransaction();
+
+        try {
+            // Crea el asiento contable principal
+            $journal = JournalEntry::create([
+                'date' => now(),
+                'description' => 'Pago recibido del cliente',
+                'reference' => $pay->id,
+                'user_id' => auth()->id(),
+            ]);
+
+            // Busca las cuentas contables
+            $cuentaCaja = AccountingAccount::where('code', '1.1.01')->first(); // Caja
+            $cuentaCxC = AccountingAccount::where('code', '1.1.03')->first(); // Cuentas por cobrar
+            if (!$cuentaCaja || !$cuentaCxC) {
+               throw new \Exception('No se encontraron las cuentas contables requeridas.');
+            }
+            // Línea de debe: entra dinero a Caja
+            JournalEntryDetail::create([
+                'journal_entry_id' => $journal->id,
+                'accounting_account_id' => $cuentaCaja->id,
+                'debit' => $pay->amount,
+                'credit' => 0,
+                'description' => 'Ingreso de dinero en caja',
+            ]);
+
+            // Línea de haber: reduce cuentas por cobrar
+            JournalEntryDetail::create([
+                'journal_entry_id' => $journal->id,
+                'accounting_account_id' => $cuentaCxC->id,
+                'debit' => 0,
+                'credit' => $pay->amount,
+                'description' => 'Disminución de cuentas por cobrar',
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e; // o puedes hacer session()->flash('error', '...');
+        }
     }
 
 }
