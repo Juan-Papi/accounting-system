@@ -22,8 +22,7 @@
                     </form>
 
                     <div class="dropdown">
-                        <button class="btn btn-success dropdown-toggle" type="button" id="reportDropdown"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="reportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-file-export"></i> Exportar Reporte
                         </button>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="reportDropdown">
@@ -33,8 +32,8 @@
                             <a class="dropdown-item" href="{{ route('backups.report.pdf') }}">
                                 <i class="fas fa-file-pdf text-danger"></i> PDF
                             </a>
-                            <a class="dropdown-item" href="{{ route('backups.report.excel') }}">
-                                <i class="fas fa-file-excel text-success"></i> Excel
+                            <a class="dropdown-item" href="{{ route('backups.report.csv') }}">
+                                <i class="fas fa-file-csv text-success"></i> CSV
                             </a>
                         </div>
                     </div>
@@ -122,17 +121,14 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span>Backups Existentes</span>
                 <div class="btn-group btn-group-sm">
-                    <a href="{{ route('backups.report.html') }}" class="btn btn-outline-info btn-sm"
-                        title="Exportar a HTML">
+                    <a href="{{ route('backups.report.html') }}" class="btn btn-outline-info btn-sm" title="Exportar a HTML">
                         <i class="fas fa-file-code"></i>
                     </a>
-                    <a href="{{ route('backups.report.pdf') }}" class="btn btn-outline-danger btn-sm"
-                        title="Exportar a PDF">
+                    <a href="{{ route('backups.report.pdf') }}" class="btn btn-outline-danger btn-sm" title="Exportar a PDF">
                         <i class="fas fa-file-pdf"></i>
                     </a>
-                    <a href="{{ route('backups.report.excel') }}" class="btn btn-outline-success btn-sm"
-                        title="Exportar a Excel">
-                        <i class="fas fa-file-excel"></i>
+                    <a href="{{ route('backups.report.csv') }}" class="btn btn-outline-success btn-sm" title="Exportar a CSV">
+                        <i class="fas fa-file-csv"></i>
                     </a>
                 </div>
             </div>

@@ -106,7 +106,7 @@ Route::group(['prefix' => 'backup'], function () {
 
     Route::get('/report/html', [BackupController::class, 'generateHtmlReport'])->name('backups.report.html');
     Route::get('/report/pdf', [BackupController::class, 'generatePdfReport'])->name('backups.report.pdf');
-    Route::get('/report/excel', [BackupController::class, 'generateExcelReport'])->name('backups.report.excel');
+    Route::get('/report/csv', [BackupController::class, 'generateCsvReport'])->name('backups.report.csv');
 });
 
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');

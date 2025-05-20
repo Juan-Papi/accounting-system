@@ -177,7 +177,7 @@ class BackupController extends Controller
         return $pdf->download('reporte-backups-' . date('Y-m-d-H-i-s') . '.pdf');
     }
 
-    public function generateExcelReport()
+    public function generateCsvReport()
     {
         $backups = collect(Storage::files('backups'))
             ->map(function ($file) {
@@ -188,10 +188,49 @@ class BackupController extends Controller
                     'type' => $this->getBackupType(basename($file))
                 ];
             })
-            ->sortByDesc('date')
-            ->toArray();
+            ->sortByDesc('date');
 
-        return Excel::download(new BackupsExport($backups), 'reporte-backups-' . date('Y-m-d-H-i-s') . '.xlsx');
+        // Crear el contenido CSV
+        $headers = ['Nombre del Archivo', 'Tipo de Backup', 'Tamaño', 'Fecha de Creación'];
+        $csvContent = implode(',', $headers) . "\n";
+
+        foreach ($backups as $backup) {
+            $size = round($backup['size'] / 1024, 2) . ' KB';
+            $date = $backup['date']->format('d/m/Y H:i');
+
+            // Escapar campos que contienen comas y poner comillas alrededor
+            $row = [
+                $this->csvEscape($backup['name']),
+                $this->csvEscape($backup['type']),
+                $this->csvEscape($size),
+                $this->csvEscape($date)
+            ];
+
+            $csvContent .= implode(',', $row) . "\n";
+        }
+
+        // Crear una respuesta para descargar
+        $filename = 'reporte-backups-' . date('Y-m-d-H-i-s') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+    /**
+     * Escapa un valor para usarlo en CSV
+     */
+    private function csvEscape($value)
+    {
+        // Si el valor contiene comillas, comas o saltos de línea, encerrarlo en comillas
+        // y duplicar las comillas dentro del valor
+        if (preg_match('/[",\r\n]/', $value)) {
+            return '"' . str_replace('"', '""', $value) . '"';
+        }
+
+        return $value;
     }
 
     private function getBackupType($filename)
