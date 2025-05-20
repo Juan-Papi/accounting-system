@@ -137,7 +137,7 @@
                 </div>  
             </section>
             @else
-                @if (!Auth::user()->hasRole('Admin'))
+                @if ($user->hasRole('Gerente'))
                 <div class="mx-auto max-w-2xl py-10 mt-8">
                     @livewire('subsc')
                 </div>
