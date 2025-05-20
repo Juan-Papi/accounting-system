@@ -13,12 +13,31 @@
                 <h1>Gestión de Backups</h1>
             </div>
             <div class="col-md-4 text-right">
-                <form id="backupForm" action="{{ route('backups.create-instant') }}" method="POST">
-                    @csrf
-                    <button id="backupButton" type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Backup Instantáneo
-                    </button>
-                </form>
+                <div class="btn-group">
+                    <form id="backupForm" action="{{ route('backups.create-instant') }}" method="POST">
+                        @csrf
+                        <button id="backupButton" type="submit" class="btn btn-primary mr-2">
+                            <i class="fas fa-plus"></i> Backup Instantáneo
+                        </button>
+                    </form>
+
+                    <div class="dropdown">
+                        <button class="btn btn-success dropdown-toggle" type="button" id="reportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-file-export"></i> Exportar Reporte
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="reportDropdown">
+                            <a class="dropdown-item" href="{{ route('backups.report.html') }}">
+                                <i class="fas fa-file-code text-info"></i> HTML
+                            </a>
+                            <a class="dropdown-item" href="{{ route('backups.report.pdf') }}">
+                                <i class="fas fa-file-pdf text-danger"></i> PDF
+                            </a>
+                            <a class="dropdown-item" href="{{ route('backups.report.csv') }}">
+                                <i class="fas fa-file-csv text-success"></i> CSV
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -99,7 +118,20 @@
         </div>
 
         <div class="card">
-            <div class="card-header">Backups Existentes</div>
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span>Backups Existentes</span>
+                <div class="btn-group btn-group-sm">
+                    <a href="{{ route('backups.report.html') }}" class="btn btn-outline-info btn-sm" title="Exportar a HTML">
+                        <i class="fas fa-file-code"></i>
+                    </a>
+                    <a href="{{ route('backups.report.pdf') }}" class="btn btn-outline-danger btn-sm" title="Exportar a PDF">
+                        <i class="fas fa-file-pdf"></i>
+                    </a>
+                    <a href="{{ route('backups.report.csv') }}" class="btn btn-outline-success btn-sm" title="Exportar a CSV">
+                        <i class="fas fa-file-csv"></i>
+                    </a>
+                </div>
+            </div>
             <div class="card-body">
                 @if ($backups->isEmpty())
                     <p>No hay backups disponibles</p>
@@ -189,6 +221,9 @@
                 // Ejecutar cuando cambie el estado del checkbox
                 enabledCheckbox.addEventListener('change', toggleConfigFields);
             }
+
+            // Aplicar tooltip a los botones de exportación
+            $('[title]').tooltip();
         });
     </script>
 @stop

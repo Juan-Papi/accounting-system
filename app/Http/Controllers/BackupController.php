@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BackupsExport;
+use PDF;
 
 class BackupController extends Controller
 {
@@ -133,6 +136,101 @@ class BackupController extends Controller
         }
 
         return Storage::download('backups/' . $filename);
+    }
+
+    public function generateHtmlReport()
+    {
+        $backups = collect(Storage::files('backups'))
+            ->map(function ($file) {
+                return [
+                    'name' => basename($file),
+                    'size' => Storage::size($file),
+                    'date' => Carbon::createFromTimestamp(Storage::lastModified($file)),
+                    'type' => $this->getBackupType(basename($file))
+                ];
+            })
+            ->sortByDesc('date');
+
+        $html = view('backups.reports.html', compact('backups'))->render();
+
+        $filename = 'reporte-backups-' . date('Y-m-d-H-i-s') . '.html';
+        Storage::put('reports/' . $filename, $html);
+
+        return Storage::download('reports/' . $filename);
+    }
+
+    public function generatePdfReport()
+    {
+        $backups = collect(Storage::files('backups'))
+            ->map(function ($file) {
+                return [
+                    'name' => basename($file),
+                    'size' => Storage::size($file),
+                    'date' => Carbon::createFromTimestamp(Storage::lastModified($file)),
+                    'type' => $this->getBackupType(basename($file))
+                ];
+            })
+            ->sortByDesc('date');
+
+        $pdf = PDF::loadView('backups.reports.pdf', compact('backups'));
+
+        return $pdf->download('reporte-backups-' . date('Y-m-d-H-i-s') . '.pdf');
+    }
+
+    public function generateCsvReport()
+    {
+        $backups = collect(Storage::files('backups'))
+            ->map(function ($file) {
+                return [
+                    'name' => basename($file),
+                    'size' => Storage::size($file),
+                    'date' => Carbon::createFromTimestamp(Storage::lastModified($file)),
+                    'type' => $this->getBackupType(basename($file))
+                ];
+            })
+            ->sortByDesc('date');
+
+        // Crear el contenido CSV
+        $headers = ['Nombre del Archivo', 'Tipo de Backup', 'Tamaño', 'Fecha de Creación'];
+        $csvContent = implode(',', $headers) . "\n";
+
+        foreach ($backups as $backup) {
+            $size = round($backup['size'] / 1024, 2) . ' KB';
+            $date = $backup['date']->format('d/m/Y H:i');
+
+            // Escapar campos que contienen comas y poner comillas alrededor
+            $row = [
+                $this->csvEscape($backup['name']),
+                $this->csvEscape($backup['type']),
+                $this->csvEscape($size),
+                $this->csvEscape($date)
+            ];
+
+            $csvContent .= implode(',', $row) . "\n";
+        }
+
+        // Crear una respuesta para descargar
+        $filename = 'reporte-backups-' . date('Y-m-d-H-i-s') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        return response($csvContent, 200, $headers);
+    }
+
+    /**
+     * Escapa un valor para usarlo en CSV
+     */
+    private function csvEscape($value)
+    {
+        // Si el valor contiene comillas, comas o saltos de línea, encerrarlo en comillas
+        // y duplicar las comillas dentro del valor
+        if (preg_match('/[",\r\n]/', $value)) {
+            return '"' . str_replace('"', '""', $value) . '"';
+        }
+
+        return $value;
     }
 
     private function getBackupType($filename)
