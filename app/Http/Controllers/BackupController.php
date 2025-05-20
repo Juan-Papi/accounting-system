@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BackupsExport;
+use PDF;
 
 class BackupController extends Controller
 {
@@ -133,6 +136,62 @@ class BackupController extends Controller
         }
 
         return Storage::download('backups/' . $filename);
+    }
+
+    public function generateHtmlReport()
+    {
+        $backups = collect(Storage::files('backups'))
+            ->map(function ($file) {
+                return [
+                    'name' => basename($file),
+                    'size' => Storage::size($file),
+                    'date' => Carbon::createFromTimestamp(Storage::lastModified($file)),
+                    'type' => $this->getBackupType(basename($file))
+                ];
+            })
+            ->sortByDesc('date');
+
+        $html = view('backups.reports.html', compact('backups'))->render();
+
+        $filename = 'reporte-backups-' . date('Y-m-d-H-i-s') . '.html';
+        Storage::put('reports/' . $filename, $html);
+
+        return Storage::download('reports/' . $filename);
+    }
+
+    public function generatePdfReport()
+    {
+        $backups = collect(Storage::files('backups'))
+            ->map(function ($file) {
+                return [
+                    'name' => basename($file),
+                    'size' => Storage::size($file),
+                    'date' => Carbon::createFromTimestamp(Storage::lastModified($file)),
+                    'type' => $this->getBackupType(basename($file))
+                ];
+            })
+            ->sortByDesc('date');
+
+        $pdf = PDF::loadView('backups.reports.pdf', compact('backups'));
+
+        return $pdf->download('reporte-backups-' . date('Y-m-d-H-i-s') . '.pdf');
+    }
+
+    public function generateExcelReport()
+    {
+        $backups = collect(Storage::files('backups'))
+            ->map(function ($file) {
+                return [
+                    'name' => basename($file),
+                    'size' => Storage::size($file),
+                    'date' => Carbon::createFromTimestamp(Storage::lastModified($file)),
+                    'type' => $this->getBackupType(basename($file))
+                ];
+            })
+            ->sortByDesc('date')
+            ->toArray();
+
+        return Excel::download(new BackupsExport($backups), 'reporte-backups-' . date('Y-m-d-H-i-s') . '.xlsx');
     }
 
     private function getBackupType($filename)

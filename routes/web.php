@@ -45,19 +45,19 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', function () {
-       $user = Auth::user();
+        $user = Auth::user();
         $planSubscription = $user->planSubscriptions()->first();
-        if(!$planSubscription){
+        if (!$planSubscription) {
             return redirect()->route('home');
-        }  
+        }
 
         $activeSubscription = ModelPlanSubscription::where('user_id', Auth::user()->id)
-        ->where('status', 'active')
-        ->where('end_time', '>', now())
-        ->first();
+            ->where('status', 'active')
+            ->where('end_time', '>', now())
+            ->first();
 
         $plans = Plan::all();
-        return view('dashboard',compact('plans','activeSubscription'));
+        return view('dashboard', compact('plans', 'activeSubscription'));
     })->middleware('can:Ver dashboard')->name('dashboard');
 });
 
@@ -92,9 +92,9 @@ Route::get('/user/invoice/{invoice}', function (Request $request, string $invoic
 });
 
 // Route::resource('products', ProductController::class)->names('products');
-Route::get('products', [ProductController::class,'index'])->name('products.index');
-Route::get('providers', [ProviderController::class,'index'])->name('providers.index');
-Route::get('categories', [CategoryController::class,'index'])->name('categories.index');
+Route::get('products', [ProductController::class, 'index'])->name('products.index');
+Route::get('providers', [ProviderController::class, 'index'])->name('providers.index');
+Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 
 Route::post('/generar-qr', [SubscriptionController::class, 'obtenerQr'])->name('veripagos.qr');
 
@@ -103,10 +103,14 @@ Route::group(['prefix' => 'backup'], function () {
     Route::post('/instant', [BackupController::class, 'createInstant'])->name('backups.create-instant');
     Route::post('/config', [BackupController::class, 'updateConfig'])->name('backups.update-config');
     Route::get('/download/{filename}', [BackupController::class, 'download'])->name('backups.download');
+
+    Route::get('/report/html', [BackupController::class, 'generateHtmlReport'])->name('backups.report.html');
+    Route::get('/report/pdf', [BackupController::class, 'generatePdfReport'])->name('backups.report.pdf');
+    Route::get('/report/excel', [BackupController::class, 'generateExcelReport'])->name('backups.report.excel');
 });
 
-Route::get('/orders',[OrderController::class,'index'])->name('orders.index');
-Route::get('/accounts',[AccountingAccountController::class,'index'])->name('accounts.index');
-Route::get('/expenses',[EgresoController::class,'index'])->name('expenses.index');
-Route::get('/sales',[SaleController::class,'index'])->name('sales.index');
-Route::get('/payment',[SaleController::class,'payment'])->name('payment.index');
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::get('/accounts', [AccountingAccountController::class, 'index'])->name('accounts.index');
+Route::get('/expenses', [EgresoController::class, 'index'])->name('expenses.index');
+Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
+Route::get('/payment', [SaleController::class, 'payment'])->name('payment.index');
