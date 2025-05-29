@@ -50,7 +50,8 @@ class PermissionSeeder extends Seeder
             'Actualizar ventas',
             'Eliminar ventas',
 
-            'Ver dashboard'
+            'Ver dashboard',
+            'Ver Contabilidad'
         ];
 
         $executivePermissions = [

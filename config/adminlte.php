@@ -405,7 +405,7 @@ return [
         [
             'text'    => 'Contabilidad',
             'icon'    => 'fas fa-fw fa-calculator',
-            // 'can' => 'Administrar usuarios',
+             'can' => 'Ver Contabilidad',
             'submenu' => [
                 [
                     'text' => 'Cuentas',
