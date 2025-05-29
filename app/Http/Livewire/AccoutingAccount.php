@@ -22,17 +22,25 @@ class AccoutingAccount extends Component
     protected $listeners = ['delete' => 'delete'];
 
     public function render(){  
-        $parentAccounts = AccountingAccount::where('user_id', auth()->id())
-        ->where('is_parent', true)
+        // $parentAccounts = AccountingAccount::where('user_id', auth()->id())
+        // ->where('is_parent', true)
+        // ->get(); 
+        $parentAccounts = AccountingAccount::where('is_parent', true)
         ->get(); 
         
-        $accounts = AccountingAccount::where('user_id', auth()->user()->id)
-            ->when($this->search, function ($query) {
+        $accounts = AccountingAccount::when($this->search, function ($query) {
                 return $query->where('code', 'LIKE', '%' . $this->search . '%')
                     ->orWhere('name', 'LIKE', '%' . $this->search . '%');
             })
             ->orderBy('id', 'ASC')
             ->paginate(6);
+        // $accounts = AccountingAccount::where('user_id', auth()->user()->id)
+        //     ->when($this->search, function ($query) {
+        //         return $query->where('code', 'LIKE', '%' . $this->search . '%')
+        //             ->orWhere('name', 'LIKE', '%' . $this->search . '%');
+        //     })
+        //     ->orderBy('id', 'ASC')
+        //     ->paginate(6);
         return view('livewire.accounts.accouting-account',compact('accounts', 'parentAccounts'));
     }
 
