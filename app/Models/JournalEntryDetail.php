@@ -25,6 +25,6 @@ class JournalEntryDetail extends Model
 
     public function account()
     {
-        return $this->belongsTo(AccountingAccount::class);
+        return $this->belongsTo(AccountingAccount::class, 'accounting_account_id');
     }
 }

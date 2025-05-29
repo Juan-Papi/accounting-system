@@ -12,7 +12,7 @@ class AccountSeeder extends Seeder
      */
     public function run(): void
     {
-        $userId = 6; // Cambia esto según el ID de tu usuario
+        $userId = 1; // Cambia esto según el ID de tu usuario
 
         // Cuentas padre
         $cuentasPadre = [
@@ -44,6 +44,7 @@ class AccountSeeder extends Seeder
             ['code' => '1.1.01', 'name' => 'Caja', 'type' => 'activo', 'parent' => '1.1', 'initial_balance' => 10000.00],
             ['code' => '1.1.02', 'name' => 'Banco', 'type' => 'activo', 'parent' => '1.1', 'initial_balance' => 10000.00],
             ['code' => '1.1.03', 'name' => 'Clientes', 'type' => 'activo', 'parent' => '1.1', 'initial_balance' => 0.00], // <--- NUEVA CUENTA
+            ['code' => '1.1.04', 'name' => 'Inventario', 'type' => 'activo', 'parent' => '1.1', 'initial_balance' => 0.00],
 
             // Pasivo
             ['code' => '2.1', 'name' => 'Pasivo Corriente', 'type' => 'pasivo', 'parent' => '2', 'initial_balance' => 0.00],

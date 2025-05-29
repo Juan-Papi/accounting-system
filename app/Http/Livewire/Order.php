@@ -12,6 +12,9 @@ use App\Models\Order as OrderModel;
 use App\Models\Product;
 use App\Models\ProductOrder;
 use App\Models\Provider;
+use App\Models\JournalEntry;
+use App\Models\JournalEntryDetail;
+use App\Models\AccountingAccount;
 
 class Order extends Component
 {   
@@ -83,6 +86,7 @@ class Order extends Component
                     'total_price' =>$this->total_price,	
                 ]);
 
+                $this->registrarAsientoContableOrdenCompra($orden);
                 $this->emit('orderCreated');  
             }
             $this->closeModal();
@@ -168,4 +172,39 @@ class Order extends Component
             $this->total_price = '';
         }
     }  
+
+    private function registrarAsientoContableOrdenCompra($orden){
+        
+    $cuentaInventario = AccountingAccount::where('code', '1.1.04')->first(); // Inventario
+    $cuentaProveedores = AccountingAccount::where('code', '2.1.01')->first(); // Proveedores
+
+    if (!$cuentaInventario || !$cuentaProveedores) {
+        Log::error("Error: No se encontraron las cuentas contables necesarias (Inventario o Proveedores).");
+        return;
+    }
+
+    $entry = JournalEntry::create([
+        'date' => now(),
+        'description' => 'Registro de compra de productos (Orden #' . $orden->id . ')',
+               'reference' => $orden->id,
+            'user_id' => Auth::id(),
+    ]);
+
+    JournalEntryDetail::create([
+        'journal_entry_id' => $entry->id,
+        'accounting_account_id' => $cuentaInventario->id,
+        'description' => 'Ingreso de productos al inventario',
+        'debit' => $orden->total_price,
+        'credit' => 0,
+    ]);
+
+    JournalEntryDetail::create([
+        'journal_entry_id' => $entry->id,
+        'accounting_account_id' => $cuentaProveedores->id,
+        'description' => 'Registro de deuda con proveedor',
+        'debit' => 0,
+        'credit' => $orden->total_price,
+    ]);
+}
+
 }

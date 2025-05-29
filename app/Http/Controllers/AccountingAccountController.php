@@ -12,4 +12,8 @@ class AccountingAccountController extends Controller
         $accounts = AccountingAccount::all();
         return view('accounting_account.index', compact('accounts'));
     }
+
+    public function dayBook(){
+        return view('day-book.index');
+    }
 }

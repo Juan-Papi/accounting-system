@@ -102,12 +102,12 @@ class SubscriptionController extends Controller
     ));
     $response = curl_exec($curl);
     // Validar error cURL
-    // if (curl_errno($curl)) {
-    //     $error_msg = curl_error($curl);
-    //     Log::error('Error cURL al generar QR: ' . $error_msg);
-    //     curl_close($curl);
-    //     return null;
-    // }
+    if (curl_errno($curl)) {
+        $error_msg = curl_error($curl);
+        Log::error('Error cURL al generar QR: ' . $error_msg);
+        curl_close($curl);
+        return null;
+    }
     curl_close($curl);
     // Validar JSON
     $responseDecoded = json_decode($response, true);

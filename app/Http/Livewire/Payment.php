@@ -96,9 +96,9 @@ class Payment extends Component
                     ]);
                 }
             }
-
+            Log::info('Pago registrado: ' . $pay->id . ' para la venta: ' . $sale->id);
             $this->registrarAsientoContable($pay);
-
+            Log::info('Asiento contable registrado para el pago: ' . $pay->id);
 
             $this->emit('paymentCreated');
             $this->closeModal();
