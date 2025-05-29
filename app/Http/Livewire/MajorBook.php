@@ -16,22 +16,32 @@ class MajorBook extends Component
 {
     $user = Auth::user();
     $userIds = $user->employees()->pluck('id')->push($user->id);
-
-    if ($userIds->isEmpty()) {
-    $userIds = collect([$user->id]);
-    } else {
-        $userIds->push($user->id);
-    }
     
-    $accounts = AccountingAccount::whereIn('user_id', $userIds)
-        ->when($this->search, function ($query) {
-            $query->where(function ($q) {
-                $q->where('name', 'LIKE', '%' . $this->search . '%')
-                  ->orWhere('code', 'LIKE', '%' . $this->search . '%');
-            });
-        })
-        ->orderBy('code')
-        ->paginate(5);
+    // if ($userIds->isEmpty()) {
+    // $userIds = collect([$user->id]);
+    // } else {
+    //     $userIds->push($user->id);
+    // }
+
+    // $accounts = AccountingAccount::whereIn('user_id', $userIds)
+    //     ->when($this->search, function ($query) {
+    //         $query->where(function ($q) {
+    //             $q->where('name', 'LIKE', '%' . $this->search . '%')
+    //               ->orWhere('code', 'LIKE', '%' . $this->search . '%');
+    //         });
+    //     })
+    //     ->orderBy('code')
+    //     ->paginate(5);
+
+    $accounts = AccountingAccount::query()
+    ->when($this->search, function ($query) {
+        $query->where(function ($q) {
+            $q->where('name', 'LIKE', '%' . $this->search . '%')
+              ->orWhere('code', 'LIKE', '%' . $this->search . '%');
+        });
+    })
+    ->orderBy('code')
+    ->paginate(5);
 
     foreach ($accounts as $account) {
         $details = $account->journalEntryDetails()
