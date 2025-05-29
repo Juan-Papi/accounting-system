@@ -28,7 +28,7 @@
                         @foreach($providers as $provider)
                             <tr class="text-center">
                                 <td class="align-middle">{{ $provider->name }}</td>
-                                <td class="align-middle">${{ $provider->address }}</td>
+                                <td class="align-middle">{{ $provider->address }}</td>
                                 <td class="align-middle">{{ $provider->phone }}</td>
                                 <td class="align-middle">{{ $provider->email }}</td>
                                 <td class="align-middle">

@@ -17,6 +17,7 @@ class AccountingAccount extends Model
         'is_parent',
         'parent_account_id',
         'user_id',
+        'initial_balance',
     ];
 
     public function parent()
