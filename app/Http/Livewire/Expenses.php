@@ -134,18 +134,16 @@ public function registerPaymentEntry($orderPayment)
 
     // Obtener cuentas contables
     $accountPayable = AccountingAccount::where('code', '2.1.01')
-        // ->where('user_id', $userId)
         ->first();
 
     $accountCash = AccountingAccount::where('code', '1.1.01')
-        // ->where('user_id', $userId)
         ->first();
 
     if (!$accountPayable || !$accountCash) {
         throw new \Exception('Cuentas contables no configuradas para pago.');
     }
 
-    // Crear entrada en JournalEntry
+    // Crear asiento contable
     $journalEntry = JournalEntry::create([
         'date' => now(),
         'description' => 'Pago de pedido #' . $order->id,
@@ -153,25 +151,24 @@ public function registerPaymentEntry($orderPayment)
         'user_id' => $userId,
     ]);
 
-    // Detalle: Débito Caja (disminuye activo)
+    // ✅ Caja (activo): disminuye → HABER
     JournalEntryDetail::create([
         'journal_entry_id' => $journalEntry->id,
         'accounting_account_id' => $accountCash->id,
-        'debit' => $orderPayment->amount,
-        'credit' => 0,
-        'description' => 'Pago de pedido #' . $orderPayment->order_id . ' - Débito Caja',
-
+        'debit' => 0,
+        'credit' => $orderPayment->amount,
+        'description' => 'Pago de pedido #' . $orderPayment->order_id . ' - Salida de efectivo',
     ]);
 
-    // Detalle: Crédito Proveedores (disminuye pasivo)
+    // ✅ Proveedores (pasivo): disminuye → DEBE
     JournalEntryDetail::create([
         'journal_entry_id' => $journalEntry->id,
         'accounting_account_id' => $accountPayable->id,
-        'debit' => 0,
-        'credit' => $orderPayment->amount,
-        'description' => 'Pago de pedido #' . $orderPayment->order_id . ' - Crédito Proveedores',
-
+        'debit' => $orderPayment->amount,
+        'credit' => 0,
+        'description' => 'Pago de pedido #' . $orderPayment->order_id . ' - Reducción de deuda a proveedor',
     ]);
 }
+
 
 }

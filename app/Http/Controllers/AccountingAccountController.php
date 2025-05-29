@@ -16,4 +16,8 @@ class AccountingAccountController extends Controller
     public function dayBook(){
         return view('day-book.index');
     }
+    
+    public function majorBook(){
+        return view('major-book.index');
+    }
 }

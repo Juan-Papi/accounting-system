@@ -115,3 +115,4 @@ Route::get('/expenses', [EgresoController::class, 'index'])->name('expenses.inde
 Route::get('/sales', [SaleController::class, 'index'])->name('sales.index');
 Route::get('/payment', [SaleController::class, 'payment'])->name('payment.index');
 Route::get('/day-book',[AccountingAccountController::class, 'dayBook'])->name('day_book.index');
+Route::get('/major-book',[AccountingAccountController::class, 'majorBook'])->name('major_book.index');

@@ -414,11 +414,18 @@ return [
                     'active' => ['accounts*'],
                     //    'can' => 'Listar usuarios',
                 ],
-                   [
+                [
                     'text' => 'Libro Diario',
                     'route'  => 'day_book.index',
                     'icon'    => 'fas fa-fw fa-book',
                     'active' => ['day_book*'],
+                    //    'can' => 'Listar usuarios',
+                ],
+                [
+                    'text' => 'Libro Mayor',
+                    'route'  => 'major_book.index',
+                    'icon'    => 'fas fa-fw fa-book-open',
+                    'active' => ['major_book*'],
                     //    'can' => 'Listar usuarios',
                 ],
                 // [
