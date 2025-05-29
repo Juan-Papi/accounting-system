@@ -17,6 +17,12 @@ class MajorBook extends Component
     $user = Auth::user();
     $userIds = $user->employees()->pluck('id')->push($user->id);
 
+    if ($userIds->isEmpty()) {
+    $userIds = collect([$user->id]);
+    } else {
+        $userIds->push($user->id);
+    }
+    
     $accounts = AccountingAccount::whereIn('user_id', $userIds)
         ->when($this->search, function ($query) {
             $query->where(function ($q) {
